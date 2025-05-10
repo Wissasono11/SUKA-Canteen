@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk | SUKA-Canteen</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .auth-gradient {
+            background: linear-gradient(135deg, #FF7170 0%, #FFE57F 100%);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF7170',
+                        secondary: '#FFE57F',
+                        dark: '#2D3748'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen flex flex-col md:flex-row">
+        <!-- Left Side - Illustration -->
+        <div class="hidden md:flex md:w-1/2 auth-gradient p-12 items-center justify-center">
+            <div class="max-w-md text-white">
+                <h1 class="text-4xl font-bold mb-6">Selamat Datang di SUKA-Canteen</h1>
+                <p class="text-lg mb-8">Masuk untuk menikmati pengalaman pemesanan makanan kantin yang lebih mudah dan cepat.</p>
+                <div class="bg-white bg-opacity-20 p-6 rounded-lg">
+                    <blockquote class="text-lg italic">
+                        "SUKA-Canteen membantu saya menghemat waktu tanpa perlu mengantri lagi di kantin kampus!"
+                    </blockquote>
+                    <p class="mt-4 font-medium">- Mahasiswa Teknik Informatika</p>
+                    
+                </div>
+                    <ul class="space-y-2 pt-8">
+                        <li><a href="/" class="text-white underline hover:text-gray-300 ">Back</a></li>
+                    </ul>
+            </div>
+        </div>
+        
+        <!-- Right Side - Login Form -->
+        <div class="flex flex-col w-full md:w-1/2">
+            <div class="flex items-center justify-between p-4 md:p-8">
+                <a href="../../index.html" class="flex items-center">
+                    <span class="text-xl font-bold text-primary">SUKA</span>
+                    <span class="text-xl font-bold text-dark">-Canteen</span>
+                </a>
+                <div>
+                    <span class="text-gray-600 mr-2">Belum punya akun?</span>
+                    <a href="register.html" class="text-primary font-medium hover:underline">Daftar</a>
+                </div>
+            </div>
+            
+            <div class="flex-grow flex items-center justify-center p-4 md:p-8">
+                <div class="w-full max-w-md">
+                    <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Masuk ke Akun Anda</h2>
+                    
+                    <!-- Login Form -->
+                    <form id="loginForm" class="space-y-6">
+                        <!-- Role Selection -->
+                        <div class="flex bg-gray-100 rounded-lg p-1">
+                            <button type="button" id="roleStudent" class="flex-1 py-2 px-4 rounded-md font-medium bg-white shadow text-primary" onclick="selectRole('student')">Mahasiswa</button>
+                            <button type="button" id="roleOwner" class="flex-1 py-2 px-4 rounded-md font-medium text-gray-500" onclick="selectRole('owner')">Pemilik Kantin</button>
+                            <input type="hidden" id="role" name="role" value="student">
+                        </div>
+                        
+                        <!-- Email -->
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="nama@email.com" required>
+                        </div>
+                        
+                        <!-- Password -->
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <label for="password" class="block text-sm font-medium text-gray-700">Kata Sandi</label>
+                                <a href="#" class="text-sm text-primary hover:underline">Lupa kata sandi?</a>
+                            </div>
+                            <div class="relative">
+                                <input type="password" id="password" name="password" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Masukkan kata sandi" required>
+                                <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600" onclick="togglePassword()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" id="eyeIcon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Remember Me -->
+                        <div class="flex items-center">
+                            <input type="checkbox" id="remember" name="remember" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                            <label for="remember" class="ml-2 block text-sm text-gray-700">Ingat saya</label>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <div>
+                            <button type="submit" class="w-full bg-primary text-white py-3 px-4 rounded-lg font-medium hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors">
+                                Masuk
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <!-- Divider -->
+                    <div class="relative my-6">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-gray-50 text-gray-500">Atau masuk dengan</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Social Login -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <button type="button" class="flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            <svg class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                            </svg>
+                            Google
+                        </button>
+                        <button type="button" class="flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            <svg class="h-5 w-5 mr-2 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+                            </svg>
+                            Facebook
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 md:p-8 text-center text-gray-600 text-sm">
+                © 2025 SUKA-Canteen. Hak Cipta Dilindungi.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />`;
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />`;
+            }
+        }
+        
+        // Role selection
+        function selectRole(role) {
+            const studentBtn = document.getElementById('roleStudent');
+            const ownerBtn = document.getElementById('roleOwner');
+            const roleInput = document.getElementById('role');
+            
+            if (role === 'student') {
+                studentBtn.classList.add('bg-white', 'shadow', 'text-primary');
+                studentBtn.classList.remove('text-gray-500');
+                ownerBtn.classList.remove('bg-white', 'shadow', 'text-primary');
+                ownerBtn.classList.add('text-gray-500');
+                roleInput.value = 'student';
+            } else {
+                ownerBtn.classList.add('bg-white', 'shadow', 'text-primary');
+                ownerBtn.classList.remove('text-gray-500');
+                studentBtn.classList.remove('bg-white', 'shadow', 'text-primary');
+                studentBtn.classList.add('text-gray-500');
+                roleInput.value = 'owner';
+            }
+        }
+        
+        // Form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+            
+            // Simulate login - in real application, this would be an API call
+            console.log('Logging in with:', { email, role });
+            
+            // Redirect based on role
+            if (role === 'student') {
+                window.location.href = '../user/dashboard.html';
+            } else {
+                window.location.href = '../owner/dashboard.html';
+            }
+        });
+        
+        // Check URL parameters for pre-selecting role
+        window.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const type = urlParams.get('type');
+            
+            if (type === 'owner') {
+                selectRole('owner');
+            }
+        });
+    </script>
+</body>
+</html>
