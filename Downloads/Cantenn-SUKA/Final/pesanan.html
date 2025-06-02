@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesanan Terbaru</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-7xl mx-auto p-4 sm:p-6">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Pesanan terbaru</h1>
+            <button class="text-green-600 hover:text-green-700 font-medium transition-colors">
+                Lihat semua
+            </button>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50 border-b">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                NO. PESANAN
+                            </th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                PELANGGAN
+                            </th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                MENU
+                            </th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                TOTAL
+                            </th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                STATUS
+                            </th>
+                            <th class="px-4 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                AKSI
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTable" class="bg-white divide-y divide-gray-100">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const orders = [
+            {
+                id: '#ORD-12345',
+                date: '26 may, 10:30',
+                customer: {
+                    name: 'INARA RUSLI',
+                    role: 'Mahasiswa',
+                    avatar: '👩‍🦱'
+                },
+                menu: 'Nasi gorang Spesial, Es Teh',
+                total: 'Rp. 30.000',
+                status: 'Sedang diproses',
+                statusClass: 'status-sedang'
+            },
+            {
+                id: '#ORD-12344',
+                date: '26 may, 10:15',
+                customer: {
+                    name: 'Aisyah Ayudia',
+                    role: 'Mahasiswa',
+                    avatar: '👩‍🦳'
+                },
+                menu: 'Bakso Spesial, Es Jeruk',
+                total: 'Rp. 25.000',
+                status: 'Siap Diambil',
+                statusClass: 'status-siap'
+            },
+            {
+                id: '#ORD-12343',
+                date: '26 may, 09:45',
+                customer: {
+                    name: 'Naraai',
+                    role: 'Mahasiswa',
+                    avatar: '👱‍♀️'
+                },
+                menu: 'Mie Ayam, Es Jeruk',
+                total: 'Rp. 20.000',
+                status: 'Selesai',
+                statusClass: 'status-selesai'
+            }
+        ];
+
+        function renderOrders() {
+            const ordersTable = document.getElementById('ordersTable');
+            
+            ordersTable.innerHTML = orders.map(order => `
+                <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${order.id}</div>
+                        <div class="text-sm text-gray-500">${order.date}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10">
+                                <div class="h-10 w-10 rounded-full bg-amber-100 flex items-center justify-center">
+                                    <span class="text-sm">${order.customer.avatar}</span>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900">${order.customer.name}</div>
+                                <div class="text-sm text-gray-500">${order.customer.role}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4">
+                        <div class="text-sm text-gray-900">${order.menu}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${order.total}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium ${order.statusClass}">${order.status}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-right">
+                        <button class="text-gray-400 hover:text-gray-600 transition-colors" onclick="showOrderMenu('${order.id}')">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                            </svg>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function showOrderMenu(orderId) {
+            console.log('Menu clicked for order:', orderId);
+        }
+
+        function updateOrderStatus(orderId, newStatus) {
+            const orderIndex = orders.findIndex(order => order.id === orderId);
+            if (orderIndex !== -1) {
+                orders[orderIndex].status = newStatus;
+                switch(newStatus) {
+                    case 'Sedang diproses':
+                        orders[orderIndex].statusClass = 'status-sedang';
+                        break;
+                    case 'Siap Diambil':
+                        orders[orderIndex].statusClass = 'status-siap';
+                        break;
+                    case 'Selesai':
+                        orders[orderIndex].statusClass = 'status-selesai';
+                        break;
+                }
+                renderOrders();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderOrders();
+            
+            document.querySelector('.text-green-600').addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log('Lihat semua clicked');
+            });
+        });
+    </script>
+    <script src="./script.js"></script>
+</body>
+</html>
