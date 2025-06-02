@@ -1,0 +1,39 @@
+.status-sedang { color: #F59E0B; }
+.status-siap { color: #3B82F6; }
+.status-selesai { color: #10B981; }
+
+.dropdown-enter {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+.dropdown-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.2s ease-out;
+}
+.dropdown-exit {
+    opacity: 1;
+    transform: translateY(0);
+}
+.dropdown-exit-active {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.2s ease-in;
+}
+
+.login-card {
+    backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.store-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.store-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
