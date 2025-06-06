@@ -1,0 +1,270 @@
+import React, { useEffect } from "react";
+
+
+function Toko() {
+         const storeCards = document.querySelectorAll('.store-card');
+        storeCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const storeName = this.querySelector('h3').textContent;
+                alert(`Anda mengklik toko: ${storeName}`);
+            });
+        });
+       return (
+       <div className="min-h-screen bg-gray-50">
+    <nav className="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+            {/* <!-- Logo --> */}
+            <img src="./img/logo.png" alt="logo" className="h-10 "/>
+            <div className="hidden md:block">
+                <h1 className="text-xl font-medium text-gray-800">Selamat datang, Aisyah!</h1>
+            </div>
+
+            <div className="relative">
+                <div id="profileHeader" className="bg-white rounded-2xl shadow-lg border-2 border-green-primary p-2 cursor-pointer hover:shadow-xl transition-shadow duration-200">
+                    <div className="flex items-center justify-between space-x-4">
+                        <h1 className="text-xl font-bold text-green-primary">Profile</h1>
+                        <div className="w-12 h-12 bg-gray-300 rounded-full overflow-hidden">
+                            <img src="./img/ppprofil.jpg" alt="Profile" className="w-full h-full object-cover"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="dropdownMenu" className="absolute right-0 top-full mt-2 w-80 bg-white rounded-2xl shadow-lg border-2 border-gray-200 overflow-hidden hidden z-50">
+                    <div className="p-6 bg-gray-50 border-b border-gray-200">
+                        <div className="flex items-center space-x-3 mb-4">
+                            <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                            <span className="text-gray-700">
+                                <span className="font-medium">Nama:</span> Aisyah Ayudia
+                            </span>
+                        </div>
+                        
+                        <div className="flex items-center space-x-3 mb-4">
+                            <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            <span className="text-gray-700">
+                                <span className="font-medium">Email:</span> ayudia271@gmail.com
+                            </span>
+                        </div>
+                        
+                        <div className="flex items-center space-x-3">
+                            <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                            </svg>
+                            <span className="text-gray-700">
+                                <span className="font-medium">Saldo:</span> Rp24.000
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* <!-- Menu Items --> */}
+                    <div className="py-2">
+                        <button className="w-full flex items-center space-x-3 px-6 py-3 text-left hover:bg-gray-50 transition-colors duration-150">
+                            <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span className="text-gray-700">Riwayat transaksi</span>
+                        </button>
+                        
+                        <button className="w-full flex items-center space-x-3 px-6 py-3 text-left hover:bg-gray-50 transition-colors duration-150">
+                            <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                            <span className="text-gray-700">Makanan Favorit</span>
+                        </button>
+                        
+                        <button className="w-full flex items-center space-x-3 px-6 py-3 text-left hover:bg-gray-50 transition-colors duration-150">
+                            <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <span className="text-gray-700">Pengaturan Akun</span>
+                        </button>
+                        
+                        <div className="border-t border-gray-200 mt-2 pt-2">
+                            <button onclick="window.location.href='menu.html'" className="w-full flex items-center space-x-3 px-6 py-3 text-left hover:bg-red-50 transition-colors duration-150 text-red-600">
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                </svg>
+                                <span>Keluar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    {/* <!-- Main Content --> */}
+    <main className="max-w-7xl mx-auto px-6 py-8">
+        {/* <!-- Section Title --> */}
+        <div className="mb-8">
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">Tenant</h2>
+        </div>
+
+        {/* <!-- Store Grid --> */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* <!-- Store Card 1 --> */}
+            <div className="store-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer">
+                <div className="p-6">
+                    <div className="mb-4">
+                        <div className="w-20 h-20 mx-auto">
+                            <img src="./img/toko.png" alt="toko"/>
+                        </div>
+                    </div>
+                    <div className="text-center">
+                        <h3 className="text-xl font-bold text-gray-800 mb-1">Bu Yun</h3>
+                        <p className="text-gray-500 text-sm mb-3">Ayam Geprek</p>
+                        <div className="flex items-center justify-center space-x-2 text-sm">
+                            <div className="flex items-center">
+                                <svg className="w-4 h-4 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                                <span className="text-gray-600">4.7</span>
+                            </div>
+                            <span className="text-gray-400">(120)</span>
+                            <span className="text-gray-400">|</span>
+                            <span className="text-gray-600 font-medium">01</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* <!-- Store Card 2 --> */}
+            <div className="store-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer">
+                <div className="p-6">
+                    <div className="mb-4">
+                        <div className="w-20 h-20 mx-auto">
+                            <img src="./img/toko.png"/>
+                        </div>
+                    </div>
+                    <div className="text-center">
+                        <h3 className="text-xl font-bold text-gray-800 mb-1">Barokah</h3>
+                        <p className="text-gray-500 text-sm mb-3">Bakso, Mie Ayam</p>
+                        <div className="flex items-center justify-center space-x-2 text-sm">
+                            <div className="flex items-center">
+                                <svg className="w-4 h-4 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                                <span className="text-gray-600">4.9</span>
+                            </div>
+                            <span className="text-gray-400">(200)</span>
+                            <span className="text-gray-400">|</span>
+                            <span className="text-gray-600 font-medium">02</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* <!-- Store Card 3 --> */}
+            <div className="store-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer">
+                <div className="p-6">
+                    <div className="mb-4">
+                        <div className="w-20 h-20 mx-auto">
+                            <img src="./img/toko.png"/>
+                        </div>
+                    </div>
+                    <div className="text-center">
+                        <h3 className="text-xl font-bold text-gray-800 mb-1">Nasram</h3>
+                        <p className="text-gray-500 text-sm mb-3">Nasi Goreng</p>
+                        <div className="flex items-center justify-center space-x-2 text-sm">
+                            <div className="flex items-center">
+                                <svg className="w-4 h-4 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                                <span className="text-gray-600">4.8</span>
+                            </div>
+                            <span className="text-gray-400">(80)</span>
+                            <span className="text-gray-400">|</span>
+                            <span className="text-gray-600 font-medium">03</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* <!-- Store Card 4 --> */}
+            <div className="store-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer">
+                <div className="p-6">
+                    <div className="mb-4">
+                        <div className="w-20 h-20 mx-auto">
+                            <img src="./img/toko.png"/>
+                        </div>
+                    </div>
+                    <div className="text-center">
+                        <h3 className="text-xl font-bold text-gray-800 mb-1">BiteBox</h3>
+                        <p className="text-gray-500 text-sm mb-3">Side dish</p>
+                        <div className="flex items-center justify-center space-x-2 text-sm">
+                            <div className="flex items-center">
+                                <svg className="w-4 h-4 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                                <span className="text-gray-600">5</span>
+                            </div>
+                            <span className="text-gray-400">(30)</span>
+                            <span className="text-gray-400">|</span>
+                            <span className="text-gray-600 font-medium">04</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* <!-- Store Card 5 --> */}
+            <div className="store-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer">
+                <div className="p-6">
+                    <div className="mb-4">
+                        <div className="w-20 h-20 mx-auto">
+                            <img src="./img/toko.png"/>
+                        </div>
+                    </div>
+                    <div className="text-center">
+                        <h3 className="text-xl font-bold text-gray-800 mb-1">DonDo</h3>
+                        <p className="text-gray-500 text-sm mb-3">Donat</p>
+                        <div className="flex items-center justify-center space-x-2 text-sm">
+                            <div className="flex items-center">
+                                <svg className="w-4 h-4 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                                <span className="text-gray-600">4.7</span>
+                            </div>
+                            <span className="text-gray-400">(215)</span>
+                            <span className="text-gray-400">|</span>
+                            <span className="text-gray-600 font-medium">05</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* <!-- Store Card 6 --> */}
+            <div className="store-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer">
+                <div className="p-6">
+                    <div className="mb-4">
+                        <div className="w-20 h-20 mx-auto">
+                            <img src="./img/toko.png"/>
+                        </div>
+                    </div>
+                    <div className="text-center">
+                        <h3 className="text-xl font-bold text-gray-800 mb-1">Santap</h3>
+                        <p className="text-gray-500 text-sm mb-3">Cemilan</p>
+                        <div className="flex items-center justify-center space-x-2 text-sm">
+                            <div className="flex items-center">
+                                <svg className="w-4 h-4 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                                <span className="text-gray-600">4.7</span>
+                            </div>
+                            <span className="text-gray-400">(305)</span>
+                            <span className="text-gray-400">|</span>
+                            <span className="text-gray-600 font-medium">06</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+    );
+}
+
+export default Toko;
