@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import aboutImg from "../../../assets/images/aboutImg.png";
+import { Link } from "@inertiajs/react";
 
 export function AboutSection() {
     return (
@@ -31,9 +32,11 @@ export function AboutSection() {
                             </p>
                         </div>
 
-                        <Button className="bg-primary text-secondary text-lg px-8 py-6 rounded-full hover:bg-primary-hover mx-auto lg:mx-2 flex justify-center items-center w-full sm:w-auto">
-                            <span className="text-center">Yuk Daftar!</span>
-                        </Button>
+                        <Link href={route("register")}>
+                            <Button className="bg-primary text-secondary text-lg px-8 py-6 rounded-full hover:bg-primary-hover mx-auto lg:mx-2 lg:mt-4 flex justify-center items-center w-full sm:w-auto">
+                                <span className="text-center">Yuk Daftar!</span>
+                            </Button>
+                        </Link>
                     </div>
                 </div>
             </div>

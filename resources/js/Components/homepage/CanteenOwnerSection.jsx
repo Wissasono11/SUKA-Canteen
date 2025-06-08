@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import canteenImg from "../../../assets/images/canteenowner.png";
+import { Link } from "@inertiajs/react";
+import { Button } from "@/Components/ui/button";
+import { Card, CardContent } from "@/Components/ui/card";
+import canteenOwnerImage from "/resources/assets/images/canteenowner.png";
 
-// SVG ICONS
 const icons = [
     // Manajemen Pesanan
     <svg
@@ -47,7 +47,6 @@ const icons = [
     </svg>,
 ];
 
-// DATA SERVICES
 const services = [
     {
         title: "MANAJEMEN PESANAN",
@@ -66,39 +65,24 @@ const services = [
     },
 ];
 
-// KOMPONEN CARD REUSABLE
-function ServiceCard({ icon, title, description }) {
+export function CanteenOwnerSection({ auth }) {
     return (
-        <Card className="bg-background-primary shadow-lg hover:shadow-xl transition-shadow">
-            <CardContent className="p-8 text-center">
-                <div className="w-16 h-16 bg-primary-pastel rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    {icon}
-                </div>
-                <h3 className="text-xl font-bold text-primary mb-2">{title}</h3>
-                <p className="text-text">{description}</p>
-            </CardContent>
-        </Card>
-    );
-}
-
-export function CanteenOwnerSection() {
-    return (
-        <section className="py-20 bg-background-secondary">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 sm:h-auto lg:px-8">
+        <section className="py-20 bg-gray-50" id="canteen-owner">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Kitchen Illustration */}
                 <div className="mb-16">
                     <img
-                        src={canteenImg}
-                        alt="canteen owner illustration"
-                        className="w-full h-auto mx-auto block object-contain rounded-xl"
+                        src={canteenOwnerImage}
+                        alt="Kitchen illustration with cooking utensils"
+                        className="w-full h-48 object-cover rounded-2xl"
                     />
                 </div>
 
                 <div className="text-center space-y-4 mb-12">
-                    <h2 className="text-3xl lg:text-4xl font-bold text-black">
+                    <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
                         Anda Pemilik Kantin?
                     </h2>
-                    <p className="text-lg text-text max-w-2xl mx-auto">
+                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                         Kelola kantin anda dengan mudah menggunakan dashboard
                         yang telah kami sediakan
                     </p>
@@ -106,25 +90,51 @@ export function CanteenOwnerSection() {
 
                 <div className="grid md:grid-cols-3 gap-8 mb-12">
                     {services.map((service, idx) => (
-                        <ServiceCard
+                        <Card
                             key={idx}
-                            icon={service.icon}
-                            title={service.title}
-                            description={service.description}
-                        />
+                            className="bg-white shadow-lg hover:shadow-xl transition-shadow"
+                        >
+                            <CardContent className="p-8 text-center">
+                                <div className="w-16 h-16 bg-primary-pastel rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                    {service.icon}
+                                </div>
+                                <h3 className="text-xl font-bold text-primary mb-2">
+                                    {service.title}
+                                </h3>
+                                <p className="text-gray-600">
+                                    {service.description}
+                                </p>
+                            </CardContent>
+                        </Card>
                     ))}
                 </div>
 
                 <div className="text-center">
-                    <Button className="bg-primary hover:bg-primary-hover text-background-primary text-lg px-8 py-6 rounded-full w-full sm:w-auto mx-auto flex justify-center items-center">
-                        <span className="w-full text-center">
-                            Olah Kantin Anda!
-                        </span>
-                    </Button>
+                    {auth?.user ? (
+                        auth.user.role === "canteen_owner" ? (
+                            <Link href={route("canteen.dashboard")}>
+                                <Button className="bg-primary hover:bg-primary-hover text-white text-lg px-8 py-4 rounded-full">
+                                    Akses Dashboard Kantin
+                                </Button>
+                            </Link>
+                        ) : (
+                            <Link href={route("register")}>
+                                <Button className="bg-primary hover:bg-primary-hover text-white text-lg px-8 py-4 rounded-full">
+                                    Daftar Sebagai Pemilik Kantin
+                                </Button>
+                            </Link>
+                        )
+                    ) : (
+                        <Link
+                            href={route("register", { role: "canteen_owner" })}
+                        >
+                            <Button className="bg-primary hover:bg-primary-hover text-white text-lg px-8 py-4 rounded-full">
+                                Olah Kantin Anda!
+                            </Button>
+                        </Link>
+                    )}
                 </div>
             </div>
         </section>
     );
 }
-
-export default CanteenOwnerSection;

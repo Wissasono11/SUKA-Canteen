@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Link } from "@inertiajs/react";
 
 export function ServicesSection() {
     const services = [
@@ -147,9 +148,13 @@ export function ServicesSection() {
                             </p>
                         </div>
 
-                        <Button className="bg-primary text-background-primary text-lg px-8 py-6 rounded-full hover:bg-primary-hover mx-auto lg:mx-2 flex justify-center items-center w-full sm:w-auto">
-                            <span className="w-full text-center">Explore</span>
-                        </Button>
+                        <Link href={route("register")}>
+                            <Button className="bg-primary text-background-primary text-lg px-8 py-6 rounded-full hover:bg-primary-hover mx-auto lg:mx-0 lg:mt-4 flex justify-center items-center w-full sm:w-auto">
+                                <span className="w-full text-center">
+                                    Explore
+                                </span>
+                            </Button>
+                        </Link>
                     </div>
 
                     {/* Services Grid */}

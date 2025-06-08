@@ -1,22 +1,36 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+// Public routes
 Route::get('/', function () {
     return Inertia::render('Homepage');
-})->name('home');
+})->name('homepage');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Error pages
+Route::get('/unauthorized', function () {
+    return Inertia::render('Auth/Unauthorized');
+})->name('unauthorized');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::get('/pending-approval', function () {
+    return Inertia::render('Auth/PendingApproval');
+})->middleware('auth')->name('pending-approval');
+
+// User routes
+Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
+    Route::get('/menu', function () {
+        return Inertia::render('User/Menu');
+    })->name('user.menu');
 });
 
+// Canteen owner routes
+Route::middleware(['auth', 'verified', 'role:canteen_owner'])->group(function () {
+    Route::get('/canteen/dashboard', function () {
+        return Inertia::render('CanteenOwner/Dashboard');
+    })->name('canteen.dashboard');
+});
+
+
+// PASTIKAN BARIS INI ADA
 require __DIR__ . '/auth.php';

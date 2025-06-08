@@ -1,22 +1,33 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Link } from "@inertiajs/react";
+import { Button } from "@/Components/ui/button";
 import { Menu, X } from "lucide-react";
 
-export function Navbar() {
+export function Navbar({ auth }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+    // Fungsi smooth scroll
+    const handleSmoothScroll = (e, targetId) => {
+        e.preventDefault();
+        const el = document.getElementById(targetId);
+        if (el) {
+            el.scrollIntoView({ behavior: "smooth" });
+            setIsMenuOpen(false);
+        }
+    };
+
     return (
-        <header className="bg-white shadow-md border-b sticky top-0 z-50">
+        <header className="bg-white shadow-sm border-b sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
                     <div className="flex items-center">
                         <a href="/" className="flex items-center space-x-2">
                             <svg
-                                width="36"
-                                height="36"
+                                width="30"
+                                height="30"
                                 viewBox="0 0 36 36"
                                 fill="none"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -31,58 +42,85 @@ export function Navbar() {
                                     fill="white"
                                 />
                             </svg>
-                            <span className="text-xl font-bold text-primary">
+                            <span className="text-xl font-bold text-gray-900">
                                 SUKA-
-                                <span className="text-black">Canteen</span>
+                                <span className="text-gray-700">Canteen</span>
                             </span>
                         </a>
                     </div>
 
                     {/* Desktop Navigation */}
                     <nav className="hidden md:flex space-x-8">
-                        <a
-                            href="#home"
-                            className="text-primary hover:text-primary-hover font-bold"
+                        <button
+                            onClick={(e) => handleSmoothScroll(e, "home")}
+                            className="text-primary hover:text-primary-hover font-medium bg-transparent border-none outline-none cursor-pointer"
                         >
                             Home
-                        </a>
-                        <a
-                            href="#menu"
-                            className="text-text font-medium hover:text-primary"
+                        </button>
+                        <button
+                            onClick={(e) => handleSmoothScroll(e, "menu")}
+                            className="text-gray-700 hover:text-primary font-medium bg-transparent border-none outline-none cursor-pointer"
                         >
                             Menu
-                        </a>
-                        <a
-                            href="#about"
-                            className="text-text font-medium hover:text-primary "
+                        </button>
+                        <button
+                            onClick={(e) => handleSmoothScroll(e, "about")}
+                            className="text-gray-700 hover:text-primary font-medium bg-transparent border-none outline-none cursor-pointer"
                         >
                             About
-                        </a>
-                        <a
-                            href="#services"
-                            className="text-text font-medium hover:text-primary "
+                        </button>
+                        <button
+                            onClick={(e) => handleSmoothScroll(e, "services")}
+                            className="text-gray-700 hover:text-primary font-medium bg-transparent border-none outline-none cursor-pointer"
                         >
                             Services
-                        </a>
-                        <a
-                            href="#contact"
-                            className="text-text font-medium hover:text-primary "
+                        </button>
+                        <button
+                            onClick={(e) => handleSmoothScroll(e, "contact")}
+                            className="text-gray-700 hover:text-primary font-medium bg-transparent border-none outline-none cursor-pointer"
                         >
                             Contact
-                        </a>
+                        </button>
                     </nav>
 
                     {/* Desktop Actions */}
                     <div className="hidden md:flex items-center space-x-4">
-                        <Button
-                            variant="outline"
-                            className="text-text border-gray-300 rounded-3xl hover:rounded-3xl hover:bg-secondary"
-                        >
-                            Sign Up
-                        </Button>
-                        <Button className="bg-primary text-white rounded-3xl px-6 hover:bg-primary-hover">
-                            Login
-                        </Button>
+                        {auth?.user ? (
+                            <>
+                                {/* Tampilkan Hi, username di pojok kanan */}
+                                <span className="font-medium mr-2 text-text">
+                                    Halo,{" "}
+                                    <span className="text-primary">
+                                        {auth.user.name}
+                                    </span>
+                                </span>
+                                <Link
+                                    href={route("logout")}
+                                    method="post"
+                                    as="button"
+                                >
+                                    <Button className="bg-primary hover:bg-primary-hover text-white rounded-full px-6">
+                                        Logout
+                                    </Button>
+                                </Link>
+                            </>
+                        ) : (
+                            <>
+                                <Link href={route("register")}>
+                                    <Button
+                                        variant="ghost"
+                                        className="text-gray-700 hover:text-primary"
+                                    >
+                                        Sign Up
+                                    </Button>
+                                </Link>
+                                <Link href={route("login")}>
+                                    <Button className="bg-primary hover:bg-primary-hover text-white rounded-full px-6">
+                                        Login
+                                    </Button>
+                                </Link>
+                            </>
+                        )}
                     </div>
 
                     {/* Mobile menu button */}
@@ -105,46 +143,102 @@ export function Navbar() {
                 {isMenuOpen && (
                     <div className="md:hidden py-4 border-t">
                         <div className="flex flex-col space-y-3">
-                            <a
-                                href="#home"
-                                className="text-primary hover:text-primary-hover font-medium py-2"
+                            <button
+                                onClick={(e) => handleSmoothScroll(e, "home")}
+                                className="text-primary hover:text-primary-hover font-medium py-2 bg-transparent border-none outline-none text-left"
                             >
                                 Home
-                            </a>
-                            <a
-                                href="#menu"
-                                className="text-text hover:text-primary font-medium py-2"
+                            </button>
+                            <button
+                                onClick={(e) => handleSmoothScroll(e, "menu")}
+                                className="text-gray-700 hover:text-primary font-medium py-2 bg-transparent border-none outline-none text-left"
                             >
                                 Menu
-                            </a>
-                            <a
-                                href="#about"
-                                className="text-text hover:text-primary font-medium py-2"
+                            </button>
+                            <button
+                                onClick={(e) => handleSmoothScroll(e, "about")}
+                                className="text-gray-700 hover:text-primary font-medium py-2 bg-transparent border-none outline-none text-left"
                             >
                                 About
-                            </a>
-                            <a
-                                href="#services"
-                                className="text-text hover:text-primary font-medium py-2"
+                            </button>
+                            <button
+                                onClick={(e) =>
+                                    handleSmoothScroll(e, "services")
+                                }
+                                className="text-gray-700 hover:text-primary font-medium py-2 bg-transparent border-none outline-none text-left"
                             >
                                 Services
-                            </a>
-                            <a
-                                href="#contact"
-                                className="text-text hover:text-primary font-medium py-2"
+                            </button>
+                            <button
+                                onClick={(e) =>
+                                    handleSmoothScroll(e, "contact")
+                                }
+                                className="text-gray-700 hover:text-primary font-medium py-2 bg-transparent border-none outline-none text-left"
                             >
                                 Contact
-                            </a>
+                            </button>
                             <div className="flex flex-col space-y-2 pt-4 border-t">
-                                <Button
-                                    variant="ghost"
-                                    className="justify-center text-text hover:bg-secondary hover:text-text"
-                                >
-                                    Sign Up
-                                </Button>
-                                <Button className="justify-center bg-primary hover:bg-primary-hover text-white">
-                                    Login
-                                </Button>
+                                {auth?.user ? (
+                                    <>
+                                        {auth.user.role === "user" && (
+                                            <Link href={route("user.menu")}>
+                                                <Button
+                                                    variant="ghost"
+                                                    className="justify-start text-gray-700"
+                                                >
+                                                    Menu
+                                                </Button>
+                                            </Link>
+                                        )}
+                                        {auth.user.role === "canteen_owner" && (
+                                            <Link
+                                                href={route(
+                                                    "canteen.dashboard"
+                                                )}
+                                            >
+                                                <Button
+                                                    variant="ghost"
+                                                    className="justify-start text-gray-700"
+                                                >
+                                                    Dashboard
+                                                </Button>
+                                            </Link>
+                                        )}
+                                        <Link href={route("profile.edit")}>
+                                            <Button
+                                                variant="ghost"
+                                                className="justify-start text-gray-700"
+                                            >
+                                                {auth.user.name}
+                                            </Button>
+                                        </Link>
+                                        <Link
+                                            href={route("logout")}
+                                            method="post"
+                                            as="button"
+                                        >
+                                            <Button className="justify-start bg-primary hover:bg-primary-hover text-white">
+                                                Logout
+                                            </Button>
+                                        </Link>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Link href={route("register")}>
+                                            <Button
+                                                variant="ghost"
+                                                className="justify-start text-gray-700"
+                                            >
+                                                Sign Up
+                                            </Button>
+                                        </Link>
+                                        <Link href={route("login")}>
+                                            <Button className="justify-start bg-primary hover:bg-primary-hover text-white">
+                                                Login
+                                            </Button>
+                                        </Link>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -153,5 +247,3 @@ export function Navbar() {
         </header>
     );
 }
-
-export default Navbar;

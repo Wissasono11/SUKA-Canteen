@@ -123,4 +123,10 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'home_routes' => [
+        'user' => '/menu',
+        'canteen_owner' => '/canteen/dashboard',
+        'default' => '/',
+    ],
+
 ];
