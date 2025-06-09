@@ -47,16 +47,12 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        // Redirect berdasarkan role dan status approval
-        if ($user->role === 'canteen_owner' && !$user->is_approved) {
-            return redirect()->route('pending-approval');
-        }
-
-        // Redirect ke halaman yang sesuai berdasarkan role
         if ($user->role === 'canteen_owner') {
+            if (!$user->is_approved) {
+                return redirect()->route('pending-approval');
+            }
             return redirect()->route('canteen.dashboard');
         }
-
         return redirect()->route('user.menu');
     }
 }

@@ -15,18 +15,21 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                $user = Auth::user();
+                // Jika user mengakses /login atau /register, baru redirect
+                if ($request->routeIs('login') || $request->routeIs('register')) {
+                    $user = Auth::user();
 
-                if ($user->role === 'user') {
-                    return redirect()->route('user.menu');
-                } elseif ($user->role === 'canteen_owner') {
-                    if (!$user->is_approved) {
-                        return redirect()->route('pending-approval');
+                    if ($user->role === 'user') {
+                        return redirect()->route('user.menu');
+                    } elseif ($user->role === 'canteen_owner') {
+                        if (!$user->is_approved) {
+                            return redirect()->route('pending-approval');
+                        }
+                        return redirect()->route('canteen.dashboard');
                     }
-                    return redirect()->route('canteen.dashboard');
-                }
 
-                return redirect('/');
+                    return redirect('/');
+                }
             }
         }
 

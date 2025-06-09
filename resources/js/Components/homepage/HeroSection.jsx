@@ -25,8 +25,8 @@ export function HeroSection() {
                                 -Canteen.
                             </h1>
                             <p className="text-lg text-text leading-relaxed">
-                                Terintegrasi dengan kantin kampus untuk
-                                pengalaman makan yang lebih cepat dan efisien
+                                Memudahkan akses makanan favorit dari kantin
+                                kampus langsung dari genggamanmu.
                             </p>
                         </div>
 

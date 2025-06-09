@@ -42,15 +42,9 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         $user = Auth::user();
-
-        // Redirect berdasarkan role
         if ($user->role === 'canteen_owner') {
-            if (!$user->is_approved) {
-                return redirect()->route('pending-approval');
-            }
-            return redirect()->route('canteen.dashboard');
+            return redirect()->route('dashboard');
         }
-
         return redirect()->route('user.menu');
     }
 

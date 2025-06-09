@@ -1,4 +1,3 @@
-// resources/js/Pages/User/Menu.jsx
 import { Head } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { useState } from "react";

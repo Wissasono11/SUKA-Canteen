@@ -1,6 +1,5 @@
-// resources/js/Pages/Auth/Register.jsx
 import { useEffect, useState } from "react";
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, Link, router, useForm } from "@inertiajs/react";
 import { Button } from "@/Components/ui/button";
 import { Card, CardContent } from "@/Components/ui/card";
 import InputError from "@/Components/InputError";
@@ -23,9 +22,12 @@ export default function Register() {
         };
     }, []);
 
-    const submit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        post(route("register"));
+        // proses register
+        router.post("/register", data, {
+            onSuccess: () => router.visit("/menu"),
+        });
     };
 
     return (
@@ -75,7 +77,7 @@ export default function Register() {
                                     Daftar di SUKA-Canteen
                                 </h2>
 
-                                <form onSubmit={submit}>
+                                <form onSubmit={handleSubmit}>
                                     <div className="space-y-6">
                                         <div>
                                             <InputLabel
