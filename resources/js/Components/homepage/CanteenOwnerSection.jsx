@@ -1,7 +1,7 @@
 import { Link } from "@inertiajs/react";
 import { Button } from "@/Components/ui/button";
 import { Card, CardContent } from "@/Components/ui/card";
-import canteenOwnerImage from "/resources/assets/images/canteenowner.png";
+import canteenOwnerImage from "@/assets/images/canteenowner.png";
 
 const icons = [
     // Manajemen Pesanan

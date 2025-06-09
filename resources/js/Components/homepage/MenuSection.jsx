@@ -6,18 +6,18 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ChevronLeft, ChevronRight, Heart } from "lucide-react";
 
 // assets for categories
-import madangImg from "../../../assets/images/madang.png";
-import sarapanImg from "../../../assets/images/sarapan.png";
-import snackImg from "../../../assets/images/snack.png";
-import semuaImg from "../../../assets/images/semua.png";
+import madangImg from "@/assets/images/madang.png";
+import sarapanImg from "@/assets/images/sarapan.png";
+import snackImg from "@/assets/images/snack.png";
+import semuaImg from "@/assets/images/semua.png";
 
 // assets for recommendations
-import ayamImg from "../../../assets/images/ayam.png";
-import sotoImg from "../../../assets/images/soto.png";
-import indomieImg from "../../../assets/images/indomie.png";
-import baksoImg from "../../../assets/images/bakso.png";
-import gudegImg from "../../../assets/images/gudeg.png";
-import nasigorengImg from "../../../assets/images/nasigoreng.png";
+import ayamImg from "@/assets/images/ayam.png";
+import sotoImg from "@/assets/images/soto.png";
+import indomieImg from "@/assets/images/indomie.png";
+import baksoImg from "@/assets/images/bakso.png";
+import gudegImg from "@/assets/images/gudeg.png";
+import nasigorengImg from "@/assets/images/nasigoreng.png";
 
 export function MenuSection() {
     const [currentSlide, setCurrentSlide] = useState(0);

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import aboutImg from "../../../assets/images/aboutImg.png";
+import aboutImg from "@/assets/images/aboutImg.png";
 import { Link } from "@inertiajs/react";
 
 export function AboutSection() {

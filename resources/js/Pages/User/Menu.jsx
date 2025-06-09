@@ -5,6 +5,21 @@ import { Card, CardContent } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
 import { Heart, ShoppingCart } from "lucide-react";
 
+// import assets
+import ayamImg from "@/assets/images/ayam.png";
+import sotoImg from "@/assets/images/soto.png";
+import nasigorengImg from "@/assets/images/nasigoreng.png";
+import nasiayamImg from "@/assets/images/nasiayam.png";
+import rotibakarImg from "@/assets/images/rotibakar.png";
+import pisanggorengImg from "@/assets/images/pisanggoreng.png";
+import baksoImg from "@/assets/images/bakso.png";
+import gudegImg from "@/assets/images/gudeg.png";
+import indomieImg from "@/assets/images/indomie.png";
+import saladImg from "@/assets/images/salad.png";
+import desertImg from "@/assets/images/desert.png";
+import donatImg from "@/assets/images/donat.png";
+import lontongsayurImg from "@/assets/images/lontongsayur.png";
+
 export default function UserMenu({ auth }) {
     const [likedItems, setLikedItems] = useState(new Set());
     const [cartItems, setCartItems] = useState([]);
@@ -24,7 +39,7 @@ export default function UserMenu({ auth }) {
             description: "Ayam geprek dengan sambal pedas",
             price: 15000,
             category: "madang",
-            image: "/placeholder.svg?height=200&width=200",
+            image: ayamImg,
             rating: 4.2,
         },
         {
@@ -33,7 +48,7 @@ export default function UserMenu({ auth }) {
             description: "Soto ayam dengan kuah bening",
             price: 12000,
             category: "madang",
-            image: "/placeholder.svg?height=200&width=200",
+            image: sotoImg,
             rating: 4.5,
         },
         {
@@ -42,25 +57,25 @@ export default function UserMenu({ auth }) {
             description: "Nasi goreng spesial dengan telur",
             price: 14000,
             category: "madang",
-            image: "/placeholder.svg?height=200&width=200",
+            image: nasigorengImg,
             rating: 4.7,
         },
         {
             id: 4,
-            name: "Bubur Ayam",
-            description: "Bubur ayam dengan topping lengkap",
+            name: "Nasi ayam katsu",
+            description: "Nasi ayam katsu yang disiram dengan saus teriyaki",
             price: 10000,
             category: "sarapan",
-            image: "/placeholder.svg?height=200&width=200",
+            image: nasiayamImg,
             rating: 4.3,
         },
         {
             id: 5,
             name: "Roti Bakar",
-            description: "Roti bakar dengan berbagai selai",
+            description: "Roti bakar dengan taburan coklat dan keju",
             price: 8000,
             category: "sarapan",
-            image: "/placeholder.svg?height=200&width=200",
+            image: rotibakarImg,
             rating: 4.1,
         },
         {
@@ -69,8 +84,71 @@ export default function UserMenu({ auth }) {
             description: "Pisang goreng crispy",
             price: 5000,
             category: "snack",
-            image: "/placeholder.svg?height=200&width=200",
+            image: pisanggorengImg,
             rating: 4.4,
+        },
+        {
+            id: 7,
+            name: "Bakso Malang",
+            description: "Bakso Malang dengan kuah gurih dan bakso urat",
+            price: 13000,
+            category: "madang",
+            image: baksoImg,
+            rating: 4.6,
+        },
+        {
+            id: 8,
+            name: "Gudeg Jogja",
+            description: "Gudeg khas Jogja dengan krecek dan telur",
+            price: 15000,
+            category: "madang",
+            image: gudegImg,
+            rating: 4.8,
+        },
+        {
+            id: 9,
+            name: "Indomie Spesial",
+            description: "Indomie goreng dengan topping sosis dan telur",
+            price: 9000,
+            category: "snack",
+            image: indomieImg,
+            rating: 4.5,
+        },
+        {
+            id: 10,
+            name: "Salad Buah",
+            description: "Salad buah segar dengan saus mayo manis",
+            price: 12000,
+            category: "snack",
+            image: saladImg,
+            rating: 4.4,
+        },
+        {
+            id: 11,
+            name: "Dessert Box",
+            description: "Dessert box coklat lumer dan lembut",
+            price: 10000,
+            category: "snack",
+            image: desertImg,
+            rating: 4.3,
+        },
+        {
+            id: 12,
+            name: "Donat Kentang",
+            description: "Donat kentang empuk dengan taburan gula halus",
+            price: 7000,
+            category: "snack",
+            image: donatImg,
+            rating: 4.2,
+        },
+        {
+            id: 13,
+            name: "Lontong Sayur",
+            description: "Lontong sayur gurih dengan kuah santan dan telur",
+            price: 11000,
+            category: "sarapan",
+            image: lontongsayurImg,
+            rating: 4.5,
         },
     ];
 
@@ -114,7 +192,7 @@ export default function UserMenu({ auth }) {
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Menu SUKA-Canteen
+                    Daftar Menu Hari Ini
                 </h2>
             }
         >
@@ -133,7 +211,7 @@ export default function UserMenu({ auth }) {
                                     }
                                     className={`px-4 py-2 rounded-full whitespace-nowrap ${
                                         activeCategory === category.id
-                                            ? "bg-green-600 text-white"
+                                            ? "bg-primary text-white"
                                             : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                                     }`}
                                 >
@@ -155,21 +233,21 @@ export default function UserMenu({ auth }) {
                                                 item.image || "/placeholder.svg"
                                             }
                                             alt={item.name}
-                                            className="w-full h-48 object-cover"
+                                            className="w-40 h-40 object-cover rounded-full mx-auto mt-6"
                                         />
                                         <button
                                             onClick={() => toggleLike(item.id)}
-                                            className={`absolute top-3 right-3 p-2 rounded-full ${
+                                            className={`absolute top-3 right-3 p-2 rounded-full group transition-colors duration-150 ${
                                                 likedItems.has(item.id)
-                                                    ? "bg-red-500 text-white"
-                                                    : "bg-white text-gray-600"
+                                                    ? "bg-gray-100 text-white"
+                                                    : "bg-white text-gray-600 hover:bg-gray-100 "
                                             }`}
                                         >
                                             <Heart
-                                                className={`w-5 h-5 ${
+                                                className={`w-5 h-5 transition-colors duration-150 ${
                                                     likedItems.has(item.id)
-                                                        ? "fill-current"
-                                                        : ""
+                                                        ? "fill-current text-primary"
+                                                        : "hover:bg-white"
                                                 }`}
                                             />
                                         </button>
@@ -193,11 +271,14 @@ export default function UserMenu({ auth }) {
                                         </p>
                                         <div className="flex justify-between items-center">
                                             <span className="font-bold text-green-600">
-                                                Rp{item.price.toLocaleString()}
+                                                Rp
+                                                <span className="text-lg text-black">
+                                                    {item.price.toLocaleString()}
+                                                </span>
                                             </span>
                                             <Button
                                                 onClick={() => addToCart(item)}
-                                                className="bg-green-600 hover:bg-green-700"
+                                                className="bg-primary hover:bg-primary-hover text-white"
                                                 size="sm"
                                             >
                                                 Tambah
@@ -219,11 +300,11 @@ export default function UserMenu({ auth }) {
                                 </div>
                                 <div className="flex justify-between items-center mb-4">
                                     <div className="text-sm">Total</div>
-                                    <div className="font-bold text-green-600">
+                                    <div className="font-bold text-primary">
                                         Rp{totalPrice.toLocaleString()}
                                     </div>
                                 </div>
-                                <Button className="w-full bg-green-600 hover:bg-green-700">
+                                <Button className="w-full bg-primary hover:bg-primary-hover text-white">
                                     <ShoppingCart className="w-4 h-4 mr-2" />
                                     Checkout
                                 </Button>

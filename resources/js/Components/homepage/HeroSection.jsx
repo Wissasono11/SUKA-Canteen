@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import heroImg from "../../../assets/images/heroimg.png";
+import heroImg from "@/assets/images/heroimg.png";
 import { Link } from "@inertiajs/react";
 
 export function HeroSection() {

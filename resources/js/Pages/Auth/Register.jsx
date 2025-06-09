@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/Components/ui/card";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
-import registerIllustration from "../../../assets/svg/register.svg";
+import registerIllustration from "@/assets/svg/register.svg";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({

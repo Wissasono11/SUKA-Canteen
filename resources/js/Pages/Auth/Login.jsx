@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/Components/ui/card";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
-import loginIllustration from "../../../assets/svg/login.svg";
+import loginIllustration from "@/assets/svg/login.svg";
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: "",
