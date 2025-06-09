@@ -26,7 +26,7 @@ export default function Login({ status, canResetPassword }) {
 
     return (
         <>
-            <Head title="Log in" />
+            <Head title="Login - Suka-Canteen" />
 
             <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
                 <div className="flex w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">

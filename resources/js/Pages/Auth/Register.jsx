@@ -32,7 +32,7 @@ export default function Register() {
 
     return (
         <>
-            <Head title="Register" />
+            <Head title="Register - Suka-Canteen" />
 
             <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
                 <div className="w-full max-w-4xl bg-white rounded-xl shadow-lg grid grid-cols-1 lg:grid-cols-2 overflow-hidden">

@@ -11,7 +11,7 @@ import { Footer } from "@/Components/homepage/Footer";
 export default function Homepage({ auth }) {
     return (
         <>
-            <Head title="Homepage" />
+            <Head title="Homepage - Suka-Canteen" />
             <div className="min-h-screen bg-white">
                 <Navbar auth={auth} />
                 <main>

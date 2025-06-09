@@ -196,7 +196,7 @@ export default function UserMenu({ auth }) {
                 </h2>
             }
         >
-            <Head title="Menu" />
+            <Head title="Daftar Menu Hari Ini - Suka-Canteen" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">

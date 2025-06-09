@@ -17,7 +17,7 @@ export default function CanteenOwnerDashboard({ auth }) {
                 </h2>
             }
         >
-            <Head title="Dashboard Pemilik Kantin" />
+            <Head title="Dashboard Pemilik Kantin - Suka-Canteen" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
