@@ -46,29 +46,25 @@ export default function AuthenticatedLayout({ header, children }) {
                             <div className="relative ms-3 flex items-center space-x-2">
                                 <Dropdown>
                                     <Dropdown.Trigger>
-                                        <span className="inline-flex rounded-md">
-                                            <button
-                                                type="button"
-                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text- font-medium leading-4 text-primary transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
-                                            >
-                                                {user.name}
-
-                                                <svg
-                                                    className="-me-0.5 ms-2 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clipRule="evenodd"
-                                                    />
-                                                </svg>
-                                            </button>
+                                        <span className="inline-flex rounded-full">
+                                            {user.photo ? (
+                                                <img
+                                                    src={user.photo}
+                                                    alt={user.name}
+                                                    className="w-9 h-9 rounded-full object-cover border border-[#5B721C]"
+                                                />
+                                            ) : (
+                                                <div className="w-9 h-9 rounded-full bg-[#5B721C] flex items-center justify-center text-white font-bold text-lg border border-[#5B721C]">
+                                                    {user.name
+                                                        .split(" ")
+                                                        .map((n) => n[0])
+                                                        .join("")
+                                                        .substring(0, 2)
+                                                        .toUpperCase()}
+                                                </div>
+                                            )}
                                         </span>
                                     </Dropdown.Trigger>
-
                                     <Dropdown.Content>
                                         <Dropdown.Link
                                             href={route("profile.edit")}
@@ -87,29 +83,42 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
                         </div>
 
+                        {/* MOBILE: Avatar as menu trigger */}
                         <div className="-me-2 flex items-center sm:hidden">
-                            <button
-                                onClick={() =>
-                                    setShowingNavigationDropdown(
-                                        (previousState) => !previousState
-                                    )
-                                }
-                                className="inline-flex items-center justify-center rounded-md p-2 text-gray-100 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none"
-                            >
-                                <svg
-                                    className="h-6 w-6"
-                                    stroke="#5B721C"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                </svg>
-                            </button>
+                            <Dropdown>
+                                <Dropdown.Trigger>
+                                    <span className="inline-flex rounded-full">
+                                        {user.photo ? (
+                                            <img
+                                                src={user.photo}
+                                                alt={user.name}
+                                                className="w-9 h-9 rounded-full object-cover border border-primary"
+                                            />
+                                        ) : (
+                                            <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white font-bold text-lg border border-primary">
+                                                {user.name
+                                                    .split(" ")
+                                                    .map((n) => n[0])
+                                                    .join("")
+                                                    .substring(0, 2)
+                                                    .toUpperCase()}
+                                            </div>
+                                        )}
+                                    </span>
+                                </Dropdown.Trigger>
+                                <Dropdown.Content align="right">
+                                    <Dropdown.Link href={route("profile.edit")}>
+                                        Profile
+                                    </Dropdown.Link>
+                                    <Dropdown.Link
+                                        href={route("logout")}
+                                        method="post"
+                                        as="button"
+                                    >
+                                        Log Out
+                                    </Dropdown.Link>
+                                </Dropdown.Content>
+                            </Dropdown>
                         </div>
                     </div>
                 </div>
@@ -120,18 +129,6 @@ export default function AuthenticatedLayout({ header, children }) {
                         " sm:hidden"
                     }
                 >
-                    <div className="space-y-1 pb-3 pt-2">
-                        {/* Dashboard link hanya untuk canteen_owner
-                        {user.role === "canteen_owner" && (
-                            <ResponsiveNavLink
-                                href={route("dashboard")}
-                                active={route().current("dashboard")}
-                            >
-                                Dashboard
-                            </ResponsiveNavLink>
-                        )} */}
-                    </div>
-
                     <div className="border-t border-gray-200 pb-1 pt-4">
                         <div className="px-4">
                             <div className="text-base font-medium text-gray-800">
