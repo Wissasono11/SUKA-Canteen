@@ -21,6 +21,8 @@ Route::get('/pending-approval', function () {
 // User routes
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/menu', [\App\Http\Controllers\MenuController::class, 'index'])->name('user.menu');
+    Route::get('/order', [\App\Http\Controllers\OrderController::class, 'create'])->name('user.order.create');
+    Route::post('/order', [\App\Http\Controllers\OrderController::class, 'store'])->name('user.order.store');
 });
 
 // Canteen owner routes
