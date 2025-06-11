@@ -1,12 +1,15 @@
 import { Head, usePage } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Card, CardContent } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
 import { Heart, ShoppingCart, SlidersHorizontal, Search } from "lucide-react";
 import { router } from "@inertiajs/react";
 import menusukaImg from "@/assets/images/menusukapage.png";
 import Modal from "@/Components/Modal";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import { Checkbox } from "@/Components/ui/checkbox";
 
 export default function UserMenu({ auth, menus = [], canteens = [] }) {
     const [likedItems, setLikedItems] = useState(new Set());
@@ -23,6 +26,8 @@ export default function UserMenu({ auth, menus = [], canteens = [] }) {
     // State tambahan untuk detail produk
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [productQuantity, setProductQuantity] = useState(1);
+
+    const [snackbar, setSnackbar] = useState({ show: false, message: "" });
 
     // Kategori statis
     const categories = [
@@ -63,6 +68,7 @@ export default function UserMenu({ auth, menus = [], canteens = [] }) {
                 matchCanteen
             );
         });
+
         // Sorting
         if (sortBy === "name_asc")
             items.sort((a, b) => a.name.localeCompare(b.name));
@@ -113,10 +119,19 @@ export default function UserMenu({ auth, menus = [], canteens = [] }) {
         setCartItems((prev) => {
             const existingItem = prev.find((i) => i.id === item.id);
             if (existingItem) {
-                return prev.map((i) =>
-                    i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
-                );
+                setSnackbar({
+                    show: true,
+                    message:
+                        "Menu sudah ada di keranjang. Silakan tambah dari halaman keranjang.",
+                    type: "warning",
+                });
+                return prev;
             }
+            setSnackbar({
+                show: true,
+                message: "Menu berhasil dimasukkan ke dalam keranjang!",
+                type: "success",
+            });
             return [...prev, { ...item, quantity: 1 }];
         });
     };
@@ -133,12 +148,66 @@ export default function UserMenu({ auth, menus = [], canteens = [] }) {
         0
     );
 
+    // Snackbar auto-hide effect
+    useEffect(() => {
+        if (snackbar.show) {
+            const timer = setTimeout(
+                () => setSnackbar({ show: false, message: "" }),
+                2500
+            );
+            return () => clearTimeout(timer);
+        }
+    }, [snackbar.show]);
+
     return (
         <div className="min-h-screen bg-white">
-            <Head title="Menu - SUKA-Canteen" />
+            {/* Snackbar Notification */}
+            {snackbar.show && (
+                <div
+                    className={`fixed top-6 left-1/2 -translate-x-1/2 z-[9999] px-3 py-2 rounded-md shadow-lg text-sm font-semibold flex items-center gap-2 animate-fade-in max-w-[220px] w-[80vw] sm:max-w-xs sm:w-auto text-center
+            ${
+                snackbar.type === "warning"
+                    ? "bg-yellow-500 text-white"
+                    : "bg-gray-900 text-white"
+            }`}
+                    style={{ wordBreak: "break-word", whiteSpace: "pre-line" }}
+                >
+                    {snackbar.type === "warning" ? (
+                        <svg
+                            className="w-4 h-4 text-white flex-shrink-0"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M13 16h-1v-4h-1m1-4h.01"
+                            />
+                            <circle cx="12" cy="12" r="10" />
+                        </svg>
+                    ) : (
+                        <svg
+                            className="w-4 h-4 text-green-400 flex-shrink-0"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M5 13l4 4L19 7"
+                            />
+                        </svg>
+                    )}
+                    <span className="block w-full">{snackbar.message}</span>
+                </div>
+            )}
             {/* Header */}
-            <header className="bg-white border-b">
-                <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+            <header className="bg-white">
+                <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-2">
                     <span className="text-xl font-bold text-black">
                         Menu Hari Ini
                     </span>
@@ -157,19 +226,21 @@ export default function UserMenu({ auth, menus = [], canteens = [] }) {
                                 }}
                             >
                                 <ShoppingCart className="h-6 w-6 text-black" />
+                                {totalItems > 0 && (
+                                    <span className="absolute -top-2 -right-2 z-10">
+                                        <span className="inline-flex items-center justify-center rounded-full bg-primary text-white text-xs font-bold w-6 h-6 border-2 border-white shadow-sm">
+                                            {totalItems}
+                                        </span>
+                                    </span>
+                                )}
                             </Button>
-                            {totalItems > 0 && (
-                                <span className="absolute -top-2 -right-2 bg-primary text-white text-sm font-bold rounded-full w-7 h-7 flex items-center justify-center border-2 border-white z-10">
-                                    {totalItems}
-                                </span>
-                            )}
                         </div>
                     </div>
                 </div>
             </header>
 
             {/* Hero Section */}
-            <section className="flex flex-col items-center justify-center text-center py-20">
+            <section className="flex flex-col items-center justify-center text-center py-6 sm:py-12">
                 <div className="max-w-full mx-auto w-full px-6">
                     <div className="w-full h-72 rounded-2xl overflow-hidden bg-white flex items-center justify-center relative">
                         <img
@@ -203,10 +274,8 @@ export default function UserMenu({ auth, menus = [], canteens = [] }) {
             </section>
 
             {/* Tambahkan margin bawah banner */}
-            <div className="h-auto" />
-
             {/* Main Content */}
-            <main className="max-w-7xl mx-auto w-full px-6 py-12">
+            <main className="max-w-7xl mx-auto w-full px-6 py-6 sm:py-12">
                 <h2 className="text-2xl sm:text-5xl font-extrabold text-gray-900 mb-2">
                     Isi Perut, Biar Gak Lemes!
                 </h2>
@@ -225,7 +294,7 @@ export default function UserMenu({ auth, menus = [], canteens = [] }) {
                             placeholder="Cari Menu dan Kantin Favoritmu..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full rounded-full border px-12 py-4 text-base focus:outline-primary bg-white shadow-sm text-ellipsis placeholder:text-ellipsis placeholder:whitespace-nowrap placeholder:text-gray-400 placeholder:text-base sm:placeholder:text-base placeholder:text-sm"
+                            className="w-full rounded-full border px-12 py-4 text-base focus:outline-primary bg-white shadow-sm text-ellipsis placeholder:text-ellipsis placeholder:whitespace-nowrap placeholder:text-gray-400 placeholder:text-base"
                             style={{ paddingLeft: 44 }}
                         />
                     </div>
@@ -247,7 +316,39 @@ export default function UserMenu({ auth, menus = [], canteens = [] }) {
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
                     Discover food
                 </h3>
-                <div className="mb-8 overflow-x-auto sm:overflow-visible">
+                {/* Kategori Slider Mobile */}
+                <div className="block sm:hidden mb-8">
+                    <Swiper
+                        spaceBetween={8}
+                        slidesPerView={2}
+                        freeMode={true}
+                        breakpoints={{
+                            320: { slidesPerView: 2 },
+                            400: { slidesPerView: 2.5 },
+                            500: { slidesPerView: 3 },
+                            640: { slidesPerView: 4 },
+                        }}
+                        style={{ paddingBottom: 8 }}
+                    >
+                        {categories.map((cat) => (
+                            <SwiperSlide key={cat.id}>
+                                <Button
+                                    variant="outline"
+                                    className={`rounded-full px-6 py-2 text-gray-900 border-gray-300 transition-all duration-150 w-full ${
+                                        activeCategory === cat.id
+                                            ? "bg-primary text-white border-primary"
+                                            : ""
+                                    }`}
+                                    onClick={() => setActiveCategory(cat.id)}
+                                >
+                                    {cat.name}
+                                </Button>
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                </div>
+                {/* Kategori Flex Desktop */}
+                <div className="hidden sm:block mb-8 overflow-x-auto sm:overflow-visible">
                     <div
                         className="flex sm:flex-wrap gap-3 whitespace-nowrap sm:whitespace-normal"
                         style={{ WebkitOverflowScrolling: "touch" }}
@@ -270,7 +371,87 @@ export default function UserMenu({ auth, menus = [], canteens = [] }) {
                 </div>
 
                 {/* Menu Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="block sm:hidden mb-8">
+                    <Swiper
+                        spaceBetween={16}
+                        slidesPerView={1.1}
+                        style={{ paddingBottom: 8 }}
+                    >
+                        {filteredItems.map((item) => (
+                            <SwiperSlide key={item.id}>
+                                <Card
+                                    className="bg-white shadow rounded-2xl border border-gray-100 relative cursor-pointer mx-1"
+                                    onClick={() => {
+                                        setSelectedProduct(item);
+                                        setProductQuantity(1);
+                                    }}
+                                >
+                                    <CardContent className="p-6">
+                                        <div className="relative mb-4">
+                                            <img
+                                                src={
+                                                    item.image ||
+                                                    "/placeholder.svg"
+                                                }
+                                                alt={item.name}
+                                                className="w-full h-48 object-cover rounded-xl bg-gray-100"
+                                            />
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="absolute top-2 right-2 bg-white/80 hover:bg-white rounded-full"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    toggleLike(item.id);
+                                                }}
+                                            >
+                                                <Heart
+                                                    className={`h-5 w-5 ${
+                                                        likedItems.has(item.id)
+                                                            ? "fill-red-500 text-red-500"
+                                                            : "text-gray-400"
+                                                    }`}
+                                                />
+                                            </Button>
+                                        </div>
+                                        <h4 className="font-bold text-lg mb-1 text-gray-900">
+                                            {item.name}
+                                        </h4>
+                                        <p className="text-gray-600 text-sm mb-2">
+                                            {item.description}
+                                        </p>
+                                        <div className="flex items-center justify-between mt-4">
+                                            <span className="flex items-end gap-1">
+                                                <span className="text-green-600 font-bold text-sm leading-none">
+                                                    Rp
+                                                </span>
+                                                <span className="text-black font-bold text-xl leading-none">
+                                                    {item.price.toLocaleString()}
+                                                </span>
+                                            </span>
+                                            <Button
+                                                size="sm"
+                                                className="bg-primary hover:bg-primary-hover text-white rounded-full px-6"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    addToCart(item);
+                                                    setSnackbar({
+                                                        show: true,
+                                                        message:
+                                                            "Menu berhasil dimasukkan ke dalam keranjang!",
+                                                    });
+                                                }}
+                                            >
+                                                Add
+                                            </Button>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                </div>
+                <div className="hidden sm:grid grid-cols-2 lg:grid-cols-3 gap-8">
                     {filteredItems.map((item) => (
                         <Card
                             key={item.id}
@@ -312,8 +493,13 @@ export default function UserMenu({ auth, menus = [], canteens = [] }) {
                                     {item.description}
                                 </p>
                                 <div className="flex items-center justify-between mt-4">
-                                    <span className="font-bold text-primary text-lg">
-                                        Rp {item.price.toLocaleString()}
+                                    <span className="flex items-end gap-1">
+                                        <span className="text-green-600 font-bold text-sm leading-none">
+                                            Rp
+                                        </span>
+                                        <span className="text-black font-bold text-xl leading-none">
+                                            {item.price.toLocaleString()}
+                                        </span>
                                     </span>
                                     <Button
                                         size="sm"
@@ -321,6 +507,11 @@ export default function UserMenu({ auth, menus = [], canteens = [] }) {
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             addToCart(item);
+                                            setSnackbar({
+                                                show: true,
+                                                message:
+                                                    "Menu berhasil dimasukkan ke dalam keranjang!",
+                                            });
                                         }}
                                     >
                                         Add
@@ -331,12 +522,68 @@ export default function UserMenu({ auth, menus = [], canteens = [] }) {
                     ))}
                 </div>
 
-                {/* We Recommend Section */}
                 <div className="mt-12">
-                    <h3 className="text-2xl font-bold mb-6">We Recommend</h3>
-                    <div className="flex flex-wrap gap-6">
+                    <h3 className="text-2xl font-bold mb-6">
+                        From Our Recommendations{" "}
+                    </h3>
+                    {/* Mobile Slider */}
+                    <div className="block sm:hidden mb-8">
+                        <Swiper
+                            spaceBetween={16}
+                            slidesPerView={1.1}
+                            style={{ paddingBottom: 8 }}
+                        >
+                            {menus
+                                .filter((item) => item.rating >= 4.5)
+                                .slice(0, 3)
+                                .map((item) => (
+                                    <SwiperSlide key={item.id}>
+                                        <div
+                                            className="bg-white rounded-xl shadow border p-6 flex flex-col w-full max-w-xs min-w-[220px] cursor-pointer hover:shadow-lg transition"
+                                            onClick={() => {
+                                                setSelectedProduct(item);
+                                                setProductQuantity(1);
+                                            }}
+                                        >
+                                            <div className="flex-shrink-0 w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden mb-4">
+                                                <img
+                                                    src={
+                                                        item.image ||
+                                                        "/placeholder.svg"
+                                                    }
+                                                    alt={item.name}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            </div>
+                                            <div className="flex-1">
+                                                <div className="font-bold text-lg mb-1">
+                                                    {item.name}
+                                                </div>
+                                                <div className="text-gray-500 text-sm mb-2">
+                                                    Starting From
+                                                </div>
+                                                <div className="font-bold text-xl text-black mb-2">
+                                                    Rp{" "}
+                                                    {item.price.toLocaleString()}
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-yellow-500 text-lg">
+                                                        ★
+                                                    </span>
+                                                    <span className="font-medium text-gray-700">
+                                                        {item.rating}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </SwiperSlide>
+                                ))}
+                        </Swiper>
+                    </div>
+                    {/* Desktop Flex */}
+                    <div className="hidden sm:flex flex-wrap gap-6">
                         {menus
-                            .filter((item) => item.rating >= 4.5) // Atau logika rekomendasi lain
+                            .filter((item) => item.rating >= 4.5)
                             .slice(0, 3)
                             .map((item) => (
                                 <div
@@ -384,16 +631,16 @@ export default function UserMenu({ auth, menus = [], canteens = [] }) {
             {/* Product Detail Modal */}
             {selectedProduct && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
-                    <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-4xl relative flex flex-col md:flex-row gap-8">
+                    <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-8 w-full max-w-md sm:max-w-4xl relative flex flex-col md:flex-row gap-4 sm:gap-8 mx-2 sm:mx-0">
                         <button
-                            className="absolute top-5 right-5 text-2xl text-gray-700 hover:text-black"
+                            className="absolute top-3 right-3 sm:top-5 sm:right-5 text-2xl text-gray-700 hover:text-black z-10"
                             onClick={() => setSelectedProduct(null)}
                             aria-label="Close"
                         >
                             ×
                         </button>
                         <button
-                            className="absolute top-5 left-5 flex items-center gap-2 text-lg font-medium text-black hover:underline"
+                            className="absolute top-3 left-3 sm:top-5 sm:left-5 flex items-center gap-2 text-lg font-medium z-10"
                             onClick={() => setSelectedProduct(null)}
                         >
                             <span className="text-xl">←</span> Back
@@ -404,11 +651,11 @@ export default function UserMenu({ auth, menus = [], canteens = [] }) {
                                     selectedProduct.image || "/placeholder.svg"
                                 }
                                 alt={selectedProduct.name}
-                                className="w-80 h-80 object-cover rounded-full bg-gray-100"
+                                className="w-40 h-40 sm:w-80 sm:h-80 object-cover rounded-full bg-gray-100 mt-8 sm:mt-0"
                             />
                         </div>
                         <div className="flex-1 flex flex-col justify-center">
-                            <h2 className="text-4xl font-extrabold mb-2 flex items-center gap-2">
+                            <h2 className="text-2xl sm:text-4xl font-extrabold mb-2 flex items-center gap-2">
                                 {selectedProduct.name}{" "}
                                 {selectedProduct.isHot && <span>🔥</span>}
                             </h2>
@@ -427,49 +674,54 @@ export default function UserMenu({ auth, menus = [], canteens = [] }) {
                                     {selectedProduct.rating}
                                 </span>
                             </div>
-                            <p className="text-gray-700 mb-6">
+                            <p className="text-gray-700 mb-4 sm:mb-6 text-base sm:text-lg">
                                 {selectedProduct.description}
                             </p>
-                            <div className="flex items-center gap-4 mb-8">
+                            <div className="flex items-center gap-2 sm:gap-4 mb-4 sm:mb-8">
                                 <Button
                                     variant="outline"
                                     size="icon"
-                                    className="rounded-full"
+                                    className="rounded-full w-8 h-8 flex items-center justify-center border border-gray-300 text-gray-600 text-xl hover:bg-gray-100"
                                     onClick={() =>
                                         setProductQuantity((q) =>
                                             Math.max(1, q - 1)
                                         )
                                     }
                                 >
-                                    -
+                                    <span className="text-lg">-</span>
                                 </Button>
-                                <span className="text-xl font-semibold bg-black text-white px-6 py-2 rounded-full min-w-[3rem] text-center">
+                                <span className="text-lg sm:text-xl font-semibold bg-primary text-white w-10 sm:w-14 h-8 flex items-center justify-center rounded-full text-center">
                                     {productQuantity}
                                 </span>
                                 <Button
-                                    variant="outline"
                                     size="icon"
-                                    className="rounded-full"
+                                    variant="outline"
+                                    className="rounded-full w-8 h-8 flex items-center justify-center border border-gray-300 text-gray-600 text-xl hover:bg-gray-100"
                                     onClick={() =>
                                         setProductQuantity((q) => q + 1)
                                     }
                                 >
-                                    +
+                                    <span className="text-lg">+</span>
                                 </Button>
                             </div>
-                            <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center justify-between mb-2 sm:mb-4">
                                 <span className="text-gray-600">
                                     Total Price
                                 </span>
-                                <span className="text-2xl font-bold">
-                                    Rp{" "}
-                                    {(
-                                        selectedProduct.price * productQuantity
-                                    ).toLocaleString()}
+                                <span className="text-xl sm:text-2xl font-bold">
+                                    <span className="text-green-600 text-sm font-bold">
+                                        Rp
+                                    </span>
+                                    <span className="text-black font-bold">
+                                        {(
+                                            selectedProduct.price *
+                                            productQuantity
+                                        ).toLocaleString()}
+                                    </span>
                                 </span>
                             </div>
                             <Button
-                                className="w-full bg-black hover:bg-gray-800 text-white py-4 rounded-full text-lg font-semibold flex items-center justify-center gap-2"
+                                className="w-full bg-black hover:bg-gray-800 text-white py-4 sm:py-6 rounded-full text-base sm:text-lg font-semibold flex items-center justify-center gap-2 mt-2"
                                 onClick={() => {
                                     addToCart({
                                         ...selectedProduct,
@@ -478,8 +730,8 @@ export default function UserMenu({ auth, menus = [], canteens = [] }) {
                                     setSelectedProduct(null);
                                 }}
                             >
-                                Add to Cart{" "}
-                                <span className="bg-white text-black rounded-full p-1">
+                                Add to Cart
+                                <span className="bg-white w-6 h-6 flex items-center justify-center text-black rounded-full text-xl font-bold">
                                     +
                                 </span>
                             </Button>
@@ -558,72 +810,54 @@ export default function UserMenu({ auth, menus = [], canteens = [] }) {
                             Categories
                         </label>
                         <div className="grid grid-cols-2 gap-x-6 gap-y-2">
-                            <label className="flex items-center gap-2">
-                                <input
-                                    type="checkbox"
+                            <label className="flex items-center gap-2 cursor-pointer select-none">
+                                <Checkbox
                                     checked={activeCategory === "all"}
-                                    onChange={() => setActiveCategory("all")}
-                                />{" "}
+                                    onCheckedChange={() =>
+                                        setActiveCategory("all")
+                                    }
+                                />
                                 Semua
                             </label>
-                            <label className="flex items-center gap-2">
-                                <input
-                                    type="checkbox"
+                            <label className="flex items-center gap-2 cursor-pointer select-none">
+                                <Checkbox
                                     checked={activeCategory === "madang"}
-                                    onChange={() => setActiveCategory("madang")}
-                                />{" "}
+                                    onCheckedChange={() =>
+                                        setActiveCategory("madang")
+                                    }
+                                />
                                 Madang
                             </label>
-                            <label className="flex items-center gap-2">
-                                <input
-                                    type="checkbox"
+                            <label className="flex items-center gap-2 cursor-pointer select-none">
+                                <Checkbox
                                     checked={activeCategory === "sarapan"}
-                                    onChange={() =>
+                                    onCheckedChange={() =>
                                         setActiveCategory("sarapan")
                                     }
-                                />{" "}
+                                />
                                 Sarapan
                             </label>
-                            <label className="flex items-center gap-2">
-                                <input
-                                    type="checkbox"
+                            <label className="flex items-center gap-2 cursor-pointer select-none">
+                                <Checkbox
                                     checked={activeCategory === "snack"}
-                                    onChange={() => setActiveCategory("snack")}
-                                />{" "}
+                                    onCheckedChange={() =>
+                                        setActiveCategory("snack")
+                                    }
+                                />
                                 Snack
                             </label>
-                            <label className="flex items-center gap-2">
-                                <input
-                                    type="checkbox"
+                            <label className="flex items-center gap-2 cursor-pointer select-none">
+                                <Checkbox
                                     checked={activeCategory === "minuman"}
-                                    onChange={() =>
+                                    onCheckedChange={() =>
                                         setActiveCategory("minuman")
                                     }
-                                />{" "}
+                                />
                                 Minuman
                             </label>
                         </div>
                     </div>
-                    {/* Kantin */}
-                    <div className="mb-6">
-                        <label className="block font-semibold mb-2">
-                            Kantin
-                        </label>
-                        <div className="flex flex-col gap-2">
-                            <label className="flex items-center gap-2">
-                                <input type="checkbox" /> Kantin Selatan
-                            </label>
-                            <label className="flex items-center gap-2">
-                                <input type="checkbox" /> Kantin Utara
-                            </label>
-                            <label className="flex items-center gap-2">
-                                <input type="checkbox" /> Kantin Timur
-                            </label>
-                            <label className="flex items-center gap-2">
-                                <input type="checkbox" /> Kantin Barat
-                            </label>
-                        </div>
-                    </div>
+
                     {/* Rating */}
                     <div className="mb-8">
                         <label className="block font-semibold mb-2">
@@ -633,9 +867,14 @@ export default function UserMenu({ auth, menus = [], canteens = [] }) {
                             {[5, 4, 3, 2, 1].map((star) => (
                                 <label
                                     key={star}
-                                    className="flex items-center gap-2"
+                                    className="flex items-center gap-2 cursor-pointer select-none"
                                 >
-                                    <input type="checkbox" />
+                                    <Checkbox
+                                        checked={minRating === star}
+                                        onCheckedChange={() =>
+                                            setMinRating(star)
+                                        }
+                                    />
                                     <span className="flex items-center gap-1">
                                         {Array(star)
                                             .fill(0)
@@ -657,7 +896,7 @@ export default function UserMenu({ auth, menus = [], canteens = [] }) {
                     {/* Buttons */}
                     <div className="flex gap-4 mt-8">
                         <button
-                            className="flex-1 border-2 border-primary text-primary rounded-lg py-3 font-semibold hover:bg-[#f7f8f9]"
+                            className="flex-1 border-2 border-text text-text rounded-lg py-3 font-semibold hover:bg-background-secondary"
                             onClick={() => {
                                 setSortBy("latest");
                                 setMinRating(0);
