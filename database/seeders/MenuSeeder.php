@@ -56,10 +56,8 @@ class MenuSeeder extends Seeder
             ],
         ];
 
-        // Masukkan dummy menu ke kantin pertama
-        $firstCanteen = $canteens->first();
+        // Masukkan dummy menu ke tabel Menu tanpa canteen_id
         foreach ($dummyMenus as $menu) {
-            $menu['canteen_id'] = $firstCanteen->id;
             \App\Models\Menu::create($menu);
         }
     }

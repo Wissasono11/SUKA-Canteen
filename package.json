@@ -22,10 +22,24 @@
         "vite": "^6.2.4"
     },
     "dependencies": {
+        "chart.js": "^4.4.9",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
+        "laravel-echo": "^2.1.5",
         "lucide-react": "^0.511.0",
+        "pusher-js": "^8.4.0",
+        "recharts": "^2.15.3",
         "swiper": "^11.2.8",
         "tailwind-merge": "^3.3.0"
-    }
+    },
+    "name": "suka-canteen",
+    "version": "1.0.0",
+    "description": "![License: MIT](https://img.shields.io/badge/License-MIT-green.svg) ![Status](https://img.shields.io/badge/status-In%20Development-orange) ![Made with MySQL](https://img.shields.io/badge/Database-MySQL-lightgrey)",
+    "main": "postcss.config.js",
+    "directories": {
+        "test": "tests"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
 }

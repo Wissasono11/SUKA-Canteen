@@ -31,7 +31,7 @@ export default function CardMenu({
         >
             <div className="relative">
                 <img
-                    src={item.image || "/placeholder.svg"}
+                    src={item.image_url || item.image || "/placeholder.svg"}
                     alt={item.name}
                     className="w-full h-48 object-cover bg-gray-100"
                 />
@@ -46,7 +46,7 @@ export default function CardMenu({
                 />
                 {showCategoryBadge && (
                     <span className="absolute top-2 left-2 bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-sm hover:bg-green-700">
-                        {item.categoryLabel || item.category || "-"}
+                        {item.categoryLabel || (typeof item.category === "object" ? item.category?.name : item.category) || "-"}
                     </span>
                 )}
             </div>

@@ -10,6 +10,7 @@ import madangImg from "@/assets/images/madang.png";
 import sarapanImg from "@/assets/images/sarapan.png";
 import snackImg from "@/assets/images/snack.png";
 import semuaImg from "@/assets/images/semua.png";
+const minumanImg = "/placeholder.svg";
 
 // assets for recommendations
 import ayamImg from "@/assets/images/ayam.png";
@@ -22,28 +23,14 @@ import nasigorengImg from "@/assets/images/nasigoreng.png";
 export function MenuSection() {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [likedItems, setLikedItems] = useState(new Set());
+    const [activeCategory, setActiveCategory] = useState("Semua");
 
     const categories = [
-        {
-            name: "Madang",
-            count: "(25 menu)",
-            image: madangImg,
-        },
-        {
-            name: "Sarapan",
-            count: "(15 sarapan)",
-            image: sarapanImg,
-        },
-        {
-            name: "Snack",
-            count: "(35 cemilan)",
-            image: snackImg,
-        },
-        {
-            name: "Semua",
-            count: "(86 items)",
-            image: semuaImg,
-        },
+        { name: "Semua", image: semuaImg },
+        { name: "Madang", image: madangImg },
+        { name: "Sarapan", image: sarapanImg },
+        { name: "Snack", image: snackImg },
+        { name: "Minuman", image: minumanImg },
     ];
 
     const recommendations = [
@@ -53,6 +40,7 @@ export function MenuSection() {
             price: "Rp15.000",
             rating: 4.2,
             image: ayamImg,
+            category: "Madang",
         },
         {
             name: "Soto Ayam Pak Yanto",
@@ -60,6 +48,7 @@ export function MenuSection() {
             price: "Rp12.000",
             rating: 4.9,
             image: sotoImg,
+            category: "Madang",
         },
         {
             name: "Indomie Spesial",
@@ -67,6 +56,7 @@ export function MenuSection() {
             price: "Rp13.000",
             rating: 4.4,
             image: indomieImg,
+            category: "Sarapan",
         },
         {
             name: "Nasi Goreng",
@@ -74,6 +64,7 @@ export function MenuSection() {
             price: "Rp12.000",
             rating: 4.6,
             image: nasigorengImg,
+            category: "Sarapan",
         },
         {
             name: "Bakso Malang",
@@ -81,6 +72,7 @@ export function MenuSection() {
             price: "Rp14.000",
             rating: 4.3,
             image: baksoImg,
+            category: "Snack",
         },
         {
             name: "Gudeg",
@@ -88,8 +80,14 @@ export function MenuSection() {
             price: "Rp15.500",
             rating: 4.5,
             image: gudegImg,
+            category: "Minuman",
         },
     ];
+
+    const filteredRecommendations =
+        activeCategory === "Semua"
+            ? recommendations
+            : recommendations.filter((item) => item.category === activeCategory);
 
     const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
     const maxSlide = isMobile
@@ -157,57 +155,42 @@ export function MenuSection() {
 
                 {/* Recommendations */}
                 <div className="space-y-8">
-                    <div className="flex justify-between items-center">
-                        <div>
-                            <p className="text-red-400 font-medium tracking-wide uppercase text-sm mb-2">
-                                PILIHAN MENU
-                            </p>
-                            <h3 className="text-2xl lg:text-3xl font-bold text-black">
-                                Rekomendasi Madang Dari Kami
-                            </h3>
-                        </div>
-                        <div className="flex space-x-2">
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={prevSlide}
-                                className="bg-white rounded-full w-10 h-10 p-0 hover:bg-background-secondary hover:shadow-md"
-                            >
-                                <ChevronLeft className="w-4 h-4" />
-                            </Button>
-                            <Button
-                                onClick={nextSlide}
-                                className="bg-primary rounded-full w-10 h-10 p-0 hover:bg-primary-hover hover:shadow-md"
-                            >
-                                <ChevronRight className="w-4 h-4 text-white" />
-                            </Button>
+                    <div className="mb-8">
+                        <h2 className="text-3xl font-bold mb-4">Discover food</h2>
+                        <div className="flex gap-4">
+                            {categories.map((cat) => (
+                                <button
+                                    key={cat.name}
+                                    onClick={() => setActiveCategory(cat.name)}
+                                    className={`px-7 py-3 rounded-full font-semibold focus:outline-none transition-colors ${
+                                        activeCategory === cat.name
+                                            ? "bg-[#5B721C] text-white"
+                                            : "bg-gray-100 text-gray-700"
+                                    }`}
+                                >
+                                    {cat.name}
+                                </button>
+                            ))}
                         </div>
                     </div>
 
                     <div className="relative overflow-hidden">
-                        <div
-                            className="flex transition-transform duration-300 ease-in-out"
-                            style={{
-                                // Mobile: 100% per slide, Desktop: 100/3% per slide
-                                transform: `translateX(-${
-                                    currentSlide *
-                                    (window.innerWidth < 768 ? 100 : 100 / 3)
-                                }%)`,
-                            }}
-                        >
-                            {recommendations.map((item, index) => (
-                                <div
-                                    key={index}
-                                    className="w-full md:w-1/3 flex-shrink-0 px-0 md:px-4"
-                                >
-                                    <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow relative overflow-hidden max-w-xs mx-auto">
+                        <div className="flex flex-wrap gap-8 justify-center">
+                            {filteredRecommendations.length === 0 ? (
+                                <div className="text-gray-500 text-lg">
+                                    Tidak ada menu pada kategori ini.
+                                </div>
+                            ) : (
+                                filteredRecommendations.map((item, index) => (
+                                    <Card
+                                        key={index}
+                                        className="bg-white shadow-lg hover:shadow-xl transition-shadow relative overflow-hidden max-w-xs mx-auto"
+                                    >
                                         <div className="absolute top-4 right-4 z-10">
                                             <Button
                                                 variant="ghost"
                                                 size="sm"
-                                                onClick={() =>
-                                                    toggleLike(index)
-                                                }
+                                                onClick={() => toggleLike(index)}
                                                 className={`rounded-full w-10 h-10 p-0 ${
                                                     likedItems.has(index)
                                                         ? "bg-primary hover:bg-primary-hover text-white"
@@ -261,28 +244,9 @@ export function MenuSection() {
                                             </div>
                                         </CardContent>
                                     </Card>
-                                </div>
-                            ))}
+                                ))
+                            )}
                         </div>
-                    </div>
-
-                    <div className="flex justify-center space-x-2 mt-8">
-                        {Array.from({
-                            length:
-                                window.innerWidth < 768
-                                    ? recommendations.length // mobile: 6 dots
-                                    : Math.max(1, recommendations.length - 2), // desktop: 4 dots (6-2)
-                        }).map((_, index) => (
-                            <button
-                                key={index}
-                                onClick={() => setCurrentSlide(index)}
-                                className={`w-3 h-3 rounded-full transition-colors ${
-                                    currentSlide === index
-                                        ? "bg-primary"
-                                        : "bg-gray-300"
-                                }`}
-                            />
-                        ))}
                     </div>
                 </div>
             </div>
