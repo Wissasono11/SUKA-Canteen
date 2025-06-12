@@ -60,7 +60,7 @@ class MenuSeeder extends Seeder
         $firstCanteen = $canteens->first();
         foreach ($dummyMenus as $menu) {
             $menu['canteen_id'] = $firstCanteen->id;
-            \App\Models\Menu::create($menu);
+            Menu::create($menu);
         }
     }
 }

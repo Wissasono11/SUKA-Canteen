@@ -9,16 +9,6 @@ import loginIllustration from "@/assets/svg/login.svg";
 import { ArrowLeft } from "lucide-react";
 
 export default function Login({ status, canResetPassword, auth }) {
-    useEffect(() => {
-        if (auth && auth.user) {
-            if (auth.user.role === "owner") {
-                window.location.href = "/dashboard";
-            } else {
-                window.location.href = "/";
-            }
-        }
-    }, [auth]);
-
     const { data, setData, post, processing, errors, reset } = useForm({
         email: "",
         password: "",

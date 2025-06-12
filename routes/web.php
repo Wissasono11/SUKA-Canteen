@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Canteen;
 
 // Public routes
 Route::get('/', function () {
@@ -34,10 +35,16 @@ Route::middleware(['auth', 'verified', 'role:canteen_owner'])->group(function ()
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
+        $user = Auth::user();
+        $canteen = null;
+        if ($user && $user->role === 'canteen_owner') {
+            $canteen = Canteen::where('user_id', $user->id)->first();
+        }
         return Inertia::render('CanteenOwner/Dashboard', [
             'auth' => [
-                'user' => Auth::user(),
+                'user' => $user,
             ],
+            'canteen' => $canteen,
         ]);
     })->name('dashboard');
 });

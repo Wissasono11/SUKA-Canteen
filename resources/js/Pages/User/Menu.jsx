@@ -137,9 +137,8 @@ export default function UserMenu({ auth, menus = [], canteens = [] }) {
                 name: item.name || "",
                 price: typeof item.price === "number" ? item.price : 0,
                 image: item.image || "",
-                quantity: 1,
+                quantity: item.quantity && item.quantity > 0 ? item.quantity : 1,
             };
-            // Cek jika item sudah ada, update quantity saja
             const found = prev.find((i) => i.id === safeItem.id);
             if (found) {
                 setSnackbar({
@@ -149,7 +148,7 @@ export default function UserMenu({ auth, menus = [], canteens = [] }) {
                 });
                 return prev.map((i) =>
                     i.id === safeItem.id
-                        ? { ...i, quantity: i.quantity + 1 }
+                        ? { ...i, quantity: i.quantity + safeItem.quantity }
                         : i
                 );
             } else {

@@ -159,42 +159,66 @@ export default function OrderPage({
             return;
         }
 
+        if (!orderType) {
+            setNotif({
+                show: true,
+                type: "error",
+                message: "Pilih tipe pesanan!",
+            });
+            return;
+        }
+
+        if (!paymentMethod) {
+            setNotif({
+                show: true,
+                type: "error",
+                message: "Pilih metode pembayaran!",
+            });
+            return;
+        }
+
         setIsLoading(true);
 
         try {
-            // Simulasi API call
-            await new Promise((resolve) => setTimeout(resolve, 2000));
-
-            const orderData = {
-                items: cartItems.map((item) => ({
-                    ...item,
-                    note: itemNotes[item.id] || "",
-                })),
-                customerInfo: { ...customerInfo, orderType },
-                voucher: voucherApplied ? voucherCode : null,
-                discount: discount,
-                paymentMethod: paymentMethod,
-                total: finalTotal,
-                orderTime: new Date().toISOString(),
-            };
-
-            // Calculate estimated time based on items
-            const totalCookTime = cartItems.reduce((total, item) => {
-                const cookTime = Number.parseInt(
-                    item.cookTime?.split("-")[1] || "15"
-                );
-                return Math.max(total, cookTime);
-            }, 0);
-
-            setEstimatedTime(totalCookTime + 5);
-            setOrderSuccess(true);
-            setNotif({
-                show: true,
-                type: "success",
-                message: "Pesanan berhasil dibuat!",
-            });
-
-            console.log("Order data:", orderData);
+            await router.post(
+                "/orders", // pastikan route ini sesuai web.php
+                {
+                    items: cartItems.map((item) => ({
+                        id: item.id,
+                        name: item.name,
+                        price: item.price,
+                        quantity: item.quantity,
+                        note: itemNotes[item.id] || "",
+                    })),
+                    customer_name: customerInfo.name,
+                    customer_phone: customerInfo.phone,
+                    order_type: orderType,
+                    note: customerInfo.note || "",
+                    payment_method: paymentMethod,
+                    voucher: voucherApplied ? voucherCode : null,
+                    discount: discount,
+                    total: finalTotal,
+                },
+                {
+                    onSuccess: () => {
+                        setOrderSuccess(true);
+                        setNotif({
+                            show: true,
+                            type: "success",
+                            message: "Pesanan berhasil dibuat!",
+                        });
+                        clearCart();
+                    },
+                    onError: (errors) => {
+                        setNotif({
+                            show: true,
+                            type: "error",
+                            message: errors?.message || "Terjadi kesalahan saat memproses pesanan!",
+                        });
+                    },
+                    preserveScroll: true,
+                }
+            );
         } catch (error) {
             setNotif({
                 show: true,
@@ -347,7 +371,9 @@ export default function OrderPage({
                                     isLoading ||
                                     cartItems.length === 0 ||
                                     !customerInfo.name ||
-                                    !customerInfo.phone
+                                    !customerInfo.phone ||
+                                    !orderType ||
+                                    !paymentMethod
                                 }
                                 aria-label="Make Payment"
                             >
@@ -371,14 +397,27 @@ export default function OrderPage({
                                         localStorage.removeItem("cartItems");
                                     }
                                 }}
-                                aria-label="Kembali ke Menu"
                             >
+                                <ArrowLeft className="w-4 h-4 mr-2" />
                                 Kembali ke Menu
                             </Button>
                         </CardContent>
                     </Card>
                 </div>
             </div>
+
+            {/* Notifikasi */}
+            {notif.show && (
+                <div
+                    className={`fixed bottom-4 right-4 z-50 max-w-sm w-full rounded-lg shadow-lg p-4 text-sm ${
+                        notif.type === "success"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
+                    }`}
+                >
+                    {notif.message}
+                </div>
+            )}
         </div>
     );
 }
