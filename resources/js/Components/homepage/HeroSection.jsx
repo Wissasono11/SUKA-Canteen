@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import heroImg from "@/assets/images/heroimg.png";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 
 export function HeroSection() {
+    const { auth } = usePage().props;
     const handleScrollToMenu = (e) => {
         e.preventDefault();
         const el = document.getElementById("menu");
@@ -37,14 +38,26 @@ export function HeroSection() {
                                 </Button>
                             </Link>
 
-                            <Button
-                                onClick={handleScrollToMenu}
-                                variant="outline"
-                                className="text-lg text-text px-8 py-6 rounded-full border-gray-300 hover:bg-background-secondary"
-                            >
-                                Intip Menu
-                                <ArrowRight className="w-4 h-4 ml-2 mt-1" />
-                            </Button>
+                            {auth?.user ? (
+                                <Link href={route("user.menu")}>
+                                    <Button
+                                        variant="outline"
+                                        className="text-lg text-text px-8 py-6 rounded-full border-gray-300 hover:bg-background-secondary"
+                                    >
+                                        Intip Menu
+                                        <ArrowRight className="w-4 h-4 ml-2 mt-1" />
+                                    </Button>
+                                </Link>
+                            ) : (
+                                <Button
+                                    onClick={handleScrollToMenu}
+                                    variant="outline"
+                                    className="text-lg text-text px-8 py-6 rounded-full border-gray-300 hover:bg-background-secondary"
+                                >
+                                    Intip Menu
+                                    <ArrowRight className="w-4 h-4 ml-2 mt-1" />
+                                </Button>
+                            )}
                         </div>
                     </div>
 

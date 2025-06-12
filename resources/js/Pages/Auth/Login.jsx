@@ -6,7 +6,19 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import loginIllustration from "@/assets/svg/login.svg";
-export default function Login({ status, canResetPassword }) {
+import { ArrowLeft } from "lucide-react";
+
+export default function Login({ status, canResetPassword, auth }) {
+    useEffect(() => {
+        if (auth && auth.user) {
+            if (auth.user.role === "owner") {
+                window.location.href = "/dashboard";
+            } else {
+                window.location.href = "/";
+            }
+        }
+    }, [auth]);
+
     const { data, setData, post, processing, errors, reset } = useForm({
         email: "",
         password: "",
@@ -28,10 +40,27 @@ export default function Login({ status, canResetPassword }) {
         <>
             <Head title="Login - Suka-Canteen" />
 
-            <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+            <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 relative">
+                {/* Back button for mobile */}
+                <div className="lg:hidden w-full max-w-4xl mx-auto mb-4">
+                    <Link
+                        href="/"
+                        className="bg-white rounded-full shadow p-2 hover:bg-gray-100 hover:text-black transition-colors inline-flex items-center"
+                        aria-label="Kembali ke Homepage"
+                    >
+                        <ArrowLeft className="w-6 h-6" />
+                    </Link>
+                </div>
                 <div className="flex w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">
                     {/* Ilustrasi di sebelah kiri */}
-                    <div className="hidden md:flex md:w-1/2 bg-gray-50 items-center justify-center">
+                    <div className="hidden md:flex md:w-1/2 bg-gray-50 items-start justify-center relative">
+                        <Link
+                            href="/"
+                            className="absolute left-4 top-4 z-10 bg-white rounded-full shadow p-2 hover:bg-gray-100 hover:text-black transition-colors"
+                            aria-label="Kembali ke Homepage"
+                        >
+                            <ArrowLeft className="w-6 h-6" />
+                        </Link>
                         <img
                             src={loginIllustration}
                             alt="Login Illustration"

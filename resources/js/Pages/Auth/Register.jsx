@@ -6,6 +6,7 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import registerIllustration from "@/assets/svg/register.svg";
+import { ArrowLeft } from "lucide-react";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -34,10 +35,27 @@ export default function Register() {
         <>
             <Head title="Register - Suka-Canteen" />
 
-            <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+            <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 relative">
+                {/* Back button for mobile */}
+                <div className="lg:hidden w-full max-w-4xl mx-auto mb-4">
+                    <Link
+                        href="/"
+                        className="bg-white rounded-full shadow p-2 hover:bg-gray-100 hover:text-black transition-colors inline-flex items-center"
+                        aria-label="Kembali ke Homepage"
+                    >
+                        <ArrowLeft className="w-6 h-6" />
+                    </Link>
+                </div>
                 <div className="w-full max-w-4xl bg-white rounded-xl shadow-lg grid grid-cols-1 lg:grid-cols-2 overflow-hidden">
                     {/* Ilustrasi di kiri */}
-                    <div className="hidden lg:flex items-center justify-center bg-gray-50">
+                    <div className="hidden lg:flex items-start justify-center bg-gray-50 relative">
+                        <Link
+                            href="/"
+                            className="absolute left-4 top-4 z-10 bg-white rounded-full shadow p-2 hover:bg-gray-100 hover:text-black transition-colors"
+                            aria-label="Kembali ke Homepage"
+                        >
+                            <ArrowLeft className="w-6 h-6" />
+                        </Link>
                         <img
                             src={registerIllustration}
                             alt="Register Illustration"
