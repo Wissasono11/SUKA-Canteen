@@ -55,9 +55,7 @@ Teknologi yang digunakan dalam pengembangan proyek ini:
 
 ### ⚙️ Backend (Server & API)
 
-🔹**Node.js** – Runtime JavaScript untuk server-side  
-🔹**Express.js** – Framework backend ringan untuk membangun REST API  
-🔹**JWT** – Untuk autentikasi dan otorisasi pengguna
+🔹**Laravel** – Handler dan Controller untuk integrasi antar halaman 
 
 ### 🗄️ Database
 
@@ -66,7 +64,6 @@ Teknologi yang digunakan dalam pengembangan proyek ini:
 ### 🧪 Testing & Tools
 
 🔹**Postman** – Pengujian endpoint API  
-🔹**Dotenv** – Manajemen konfigurasi lingkungan
 
 ---
 
