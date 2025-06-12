@@ -8,7 +8,7 @@ class Report extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'canteen_id', 'report_date', 'total_income', 'total_orders', 'notes'
+        'report_date', 'total_income', 'total_orders', 'notes'
     ];
     public function canteen() { return $this->belongsTo(Canteen::class); }
 }

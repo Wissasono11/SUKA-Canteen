@@ -32,11 +32,25 @@ export function HeroSection() {
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-4">
-                            <Link href={route("register")}>
-                                <Button className="bg-primary text-white text-lg px-8 py-6 rounded-full hover:bg-primary-hover">
-                                    Gas Mulai!
-                                </Button>
-                            </Link>
+                            {auth?.user ? (
+                                <Link
+                                    href={
+                                        auth.user.role === "canteen_owner"
+                                            ? route("canteen.dashboard")
+                                            : route("user.menu")
+                                    }
+                                >
+                                    <Button className="bg-primary text-white text-lg px-8 py-6 rounded-full hover:bg-primary-hover">
+                                        Dashboard
+                                    </Button>
+                                </Link>
+                            ) : (
+                                <Link href={route("login")}>
+                                    <Button className="bg-primary text-white text-lg px-8 py-6 rounded-full hover:bg-primary-hover">
+                                        Gas Mulai!
+                                    </Button>
+                                </Link>
+                            )}
 
                             {auth?.user ? (
                                 <Link href={route("user.menu")}>

@@ -10,7 +10,7 @@ export default function OrderCustomerForm({
     setOrderType,
 }) {
     return (
-        <>
+        <div className="space-y-4">
             <div>
                 <Label htmlFor="buyerName">Nama Pembeli</Label>
                 <Input
@@ -24,6 +24,21 @@ export default function OrderCustomerForm({
                         })
                     }
                     required
+                    className="focus:outline-none"
+                />
+            </div>
+            <div>
+                <Label htmlFor="tableNumber">Nomor Meja</Label>
+                <Input
+                    id="tableNumber"
+                    placeholder="Masukkan nomor meja Anda"
+                    value={customerInfo.tableNumber}
+                    onChange={(e) =>
+                        setCustomerInfo({
+                            ...customerInfo,
+                            tableNumber: e.target.value,
+                        })
+                    }
                     className="focus:outline-none"
                 />
             </div>
@@ -103,6 +118,6 @@ export default function OrderCustomerForm({
                     rows={2}
                 />
             </div>
-        </>
+        </div>
     );
 }

@@ -6,7 +6,6 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('menu_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('canteen_id')->constrained()->onDelete('cascade');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->string('name');
             $table->text('description')->nullable();

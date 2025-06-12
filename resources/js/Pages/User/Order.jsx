@@ -19,6 +19,7 @@ import OrderCart from "./Order/OrderCart";
 import OrderCustomerForm from "./Order/OrderCustomerForm";
 import OrderSummary from "./Order/OrderSummary";
 import OrderPaymentMethods from "./Order/OrderPaymentMethods";
+import OrderStatusPopup from "./OrderStatusPopup";
 
 export default function OrderPage({
     cartItems: initialCartItems = [],
@@ -41,7 +42,6 @@ export default function OrderPage({
     const [voucherApplied, setVoucherApplied] = useState(false);
     const [customerInfo, setCustomerInfo] = useState({
         name: "",
-        phone: "",
         tableNumber: "",
     });
     const [isLoading, setIsLoading] = useState(false);
@@ -51,6 +51,8 @@ export default function OrderPage({
     const [itemNotes, setItemNotes] = useState({}); // { [itemId]: note }
     const [notif, setNotif] = useState({ show: false, type: "", message: "" });
     const [ewalletDropdownOpen, setEwalletDropdownOpen] = useState(false);
+    const [showStatusPopup, setShowStatusPopup] = useState(false);
+    const [lastOrderId, setLastOrderId] = useState(null);
 
     // Notifikasi otomatis hilang
     useEffect(() => {
@@ -141,20 +143,11 @@ export default function OrderPage({
             return;
         }
 
-        if (!customerInfo.name || !customerInfo.phone) {
+        if (!customerInfo.name) {
             setNotif({
                 show: true,
                 type: "error",
-                message: "Mohon lengkapi nama dan nomor telepon!",
-            });
-            return;
-        }
-
-        if (customerInfo.phone.length < 10) {
-            setNotif({
-                show: true,
-                type: "error",
-                message: "Nomor telepon tidak valid!",
+                message: "Mohon lengkapi nama!",
             });
             return;
         }
@@ -181,7 +174,7 @@ export default function OrderPage({
 
         try {
             await router.post(
-                "/orders", // pastikan route ini sesuai web.php
+                "/order", // pastikan route ini sesuai web.php
                 {
                     items: cartItems.map((item) => ({
                         id: item.id,
@@ -191,7 +184,6 @@ export default function OrderPage({
                         note: itemNotes[item.id] || "",
                     })),
                     customer_name: customerInfo.name,
-                    customer_phone: customerInfo.phone,
                     order_type: orderType,
                     note: customerInfo.note || "",
                     payment_method: paymentMethod,
@@ -200,13 +192,18 @@ export default function OrderPage({
                     total: finalTotal,
                 },
                 {
-                    onSuccess: () => {
+                    onSuccess: (page) => {
                         setOrderSuccess(true);
                         setNotif({
                             show: true,
                             type: "success",
                             message: "Pesanan berhasil dibuat!",
                         });
+                        // Ambil id order terakhir dari response jika ada
+                        if (page?.props?.order?.id) {
+                            setLastOrderId(page.props.order.id);
+                            setShowStatusPopup(true);
+                        }
                         clearCart();
                     },
                     onError: (errors) => {
@@ -371,7 +368,6 @@ export default function OrderPage({
                                     isLoading ||
                                     cartItems.length === 0 ||
                                     !customerInfo.name ||
-                                    !customerInfo.phone ||
                                     !orderType ||
                                     !paymentMethod
                                 }
@@ -405,6 +401,10 @@ export default function OrderPage({
                     </Card>
                 </div>
             </div>
+
+            {showStatusPopup && lastOrderId && (
+                <OrderStatusPopup orderId={lastOrderId} onClose={() => setShowStatusPopup(false)} />
+            )}
 
             {/* Notifikasi */}
             {notif.show && (

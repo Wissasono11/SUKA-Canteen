@@ -19,10 +19,7 @@ return new class extends Migration
             $table->string('category');
             $table->float('rating')->default(0);
             $table->string('image')->nullable();
-            $table->unsignedBigInteger('canteen_id');
             $table->timestamps();
-
-            $table->foreign('canteen_id')->references('id')->on('canteens')->onDelete('cascade');
         });
     }
 

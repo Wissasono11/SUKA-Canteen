@@ -8,8 +8,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 
 // Semua endpoint resource public (tanpa autentikasi)
-Route::apiResource('orders', OrderController::class);
 Route::get('orders/history', [OrderController::class, 'history']);
+Route::apiResource('orders', OrderController::class);
 Route::apiResource('menu-items', MenuItemController::class);
 Route::apiResource('reports', ReportController::class);
 // Profile CRUD (show, update)

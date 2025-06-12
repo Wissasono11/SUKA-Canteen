@@ -13,6 +13,7 @@ export default function DashboardMenu({ auth, canteen }) {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [selectedMenu, setSelectedMenu] = useState(null);
     const [form, setForm] = useState({ name: "", price: "", category: "madang", image: null });
+    const [errorMsg, setErrorMsg] = useState("");
 
     // Ambil user dan kantin dari props atau usePage
     const page = usePage();
@@ -103,22 +104,32 @@ export default function DashboardMenu({ auth, canteen }) {
                 </div>
             )}
             {/* Modal Tambah Menu */}
-            <Modal open={showAddModal} onClose={() => setShowAddModal(false)}>
+            <Modal open={showAddModal} onClose={() => { setShowAddModal(false); setErrorMsg(""); }}>
                 <h2 className="text-lg font-bold mb-4">Tambah Menu</h2>
+                {errorMsg && (
+                    <div className="mb-2 text-red-600 text-sm font-semibold">{errorMsg}</div>
+                )}
                 <form
                     onSubmit={async (e) => {
                         e.preventDefault();
+                        setErrorMsg("");
                         const formData = new FormData();
                         formData.append("name", form.name);
                         formData.append("price", form.price);
                         formData.append("category", form.category);
                         if (form.image) formData.append("image", form.image);
-                        // Tambahkan field yang dibutuhkan backend
-                        formData.append("nama_kantin", canteenData?.name || "");
-                        formData.append("user_id", user?.id || "");
-                        await fetch("/api/menu-items", { method: "POST", body: formData, credentials: 'include' });
-                        setShowAddModal(false);
-                        fetchMenus();
+                        try {
+                            const res = await fetch("/api/menu-items", { method: "POST", body: formData, credentials: 'include' });
+                            if (!res.ok) {
+                                const data = await res.json();
+                                setErrorMsg(data?.error || "Gagal menambah menu. Cek data dan koneksi Anda.");
+                                return;
+                            }
+                            setShowAddModal(false);
+                            fetchMenus();
+                        } catch (err) {
+                            setErrorMsg("Terjadi kesalahan jaringan atau server.");
+                        }
                     }}
                 >
                     <Input className="mb-2" placeholder="Nama Menu" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required />
@@ -131,7 +142,7 @@ export default function DashboardMenu({ auth, canteen }) {
                     </select>
                     <Input className="mb-4" type="file" accept="image/*" onChange={e => setForm({ ...form, image: e.target.files[0] })} />
                     <div className="flex justify-end space-x-2">
-                        <Button type="button" variant="outline" onClick={() => setShowAddModal(false)}>Batal</Button>
+                        <Button type="button" variant="outline" onClick={() => { setShowAddModal(false); setErrorMsg(""); }}>Batal</Button>
                         <Button type="submit" className="bg-green-600 hover:bg-green-700">Simpan</Button>
                     </div>
                 </form>
@@ -147,9 +158,6 @@ export default function DashboardMenu({ auth, canteen }) {
                         formData.append("price", form.price);
                         formData.append("category", form.category);
                         if (form.image) formData.append("image", form.image);
-                        // Tambahkan field yang dibutuhkan backend
-                        formData.append("nama_kantin", canteenData?.name || "");
-                        formData.append("user_id", user?.id || "");
                         await fetch(`/api/menu-items/${selectedMenu?.id}`, { method: "POST", headers: { "X-HTTP-Method-Override": "PUT" }, body: formData, credentials: 'include' });
                         setShowEditModal(false);
                         fetchMenus();

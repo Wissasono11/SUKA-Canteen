@@ -22,7 +22,7 @@ import MenuRecommendation from "./Menu/MenuRecommendation";
 import MenuProductModal from "./Menu/MenuProductModal";
 import MenuFilterModal from "./Menu/MenuFilterModal";
 
-export default function UserMenu({ auth, menus = [], canteens = [] }) {
+export default function UserMenu({ auth, menus = [], canteens = [], categories = [] }) {
     const [likedItems, setLikedItems] = useState(new Set());
     const [cartItems, setCartItems] = useState(() => {
         const local = localStorage.getItem("cartItems");
@@ -43,20 +43,15 @@ export default function UserMenu({ auth, menus = [], canteens = [] }) {
 
     const [snackbar, setSnackbar] = useState({ show: false, message: "" });
 
-    // Kategori statis
-    const categories = [
-        { id: "all", name: "Semua" },
-        { id: "madang", name: "Madang" },
-        { id: "sarapan", name: "Sarapan" },
-        { id: "snack", name: "Snack" },
-        { id: "minuman", name: "Minuman" },
-    ];
+    // Kategori dinamis dari backend
+    const categoryTabs = [{ id: "all", name: "Semua" }, ...(categories?.map(cat => ({ id: cat.name.toLowerCase(), name: cat.name })) || [])];
 
     // Filter menu dan kantin berdasarkan search
     const filteredItems = useMemo(() => {
         let items = menus.filter((item) => {
             const matchCategory =
-                activeCategory === "all" || item.category === activeCategory;
+                activeCategory === "all" ||
+                (item.category && (item.category.name?.toLowerCase?.() === activeCategory || item.category === activeCategory));
             const matchSearch =
                 search.trim() === "" ||
                 item.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -262,7 +257,7 @@ export default function UserMenu({ auth, menus = [], canteens = [] }) {
                     Discover food
                 </h3>
                 <MenuCategoryBar
-                    categories={categories}
+                    categories={categoryTabs}
                     activeCategory={activeCategory}
                     setActiveCategory={setActiveCategory}
                 />

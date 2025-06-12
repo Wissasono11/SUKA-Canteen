@@ -12,28 +12,20 @@ class ReportController extends Controller
 {
     public function index() {
         // Total pendapatan
-        $total_income = Order::where('status', 'Selesai')->sum('total_amount');
+        $total_income = Order::sum('total_amount');
         // Total pesanan
-        $total_orders = Order::where('status', 'Selesai')->count();
+        $total_orders = Order::count();
         // Menu terlaris
         $top_menu = OrderItem::select('menu_item_id', DB::raw('SUM(quantity) as total_qty'))
             ->groupBy('menu_item_id')
             ->orderByDesc('total_qty')
             ->first();
-        $top_menu_name = $top_menu ? MenuItem::find($top_menu->menu_item_id)->name : '-';
-        // Grafik pendapatan bulanan (12 bulan terakhir)
-        $income_chart = Order::where('status', 'Selesai')
-            ->select(DB::raw('DATE_FORMAT(created_at, "%M") as month'), DB::raw('SUM(total_amount) as total_income'))
-            ->groupBy(DB::raw('MONTH(created_at)'))
-            ->orderBy(DB::raw('MIN(created_at)'))
-            ->get();
+        $top_menu_name = ($top_menu && $top_menu->menu_item_id) ? (MenuItem::find($top_menu->menu_item_id)->name ?? '-') : '-';
+        // Grafik tetap dinonaktifkan
         return response()->json([
-            [
-                'total_income' => $total_income,
-                'total_orders' => $total_orders,
-                'top_menu' => $top_menu_name,
-                'income_chart' => $income_chart,
-            ]
+            'total_income' => $total_income,
+            'total_orders' => $total_orders,
+            'top_menu' => $top_menu_name,
         ]);
     }
     public function show($id) {

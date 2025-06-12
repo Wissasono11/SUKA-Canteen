@@ -31,7 +31,7 @@ export default function CardMenu({
         >
             <div className="relative">
                 <img
-                    src={item.image || "/placeholder.svg"}
+                    src={item.image_url || item.image || "/placeholder.svg"}
                     alt={item.name}
                     className="w-full h-48 object-cover bg-gray-100"
                 />
